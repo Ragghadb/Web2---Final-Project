@@ -28,6 +28,44 @@ namespace FinalPtoject.Controllers
                           Problem("Entity set 'FinalPtojectContext.Usersall'  is null.");
         }
 
+    public IActionResult adminpage()
+    {
+        return View();
+    }
+        public async Task<IActionResult> addadmin([Bind("name,password")] Usersall usersall)
+        {
+
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("Web2ProjectContext");
+            SqlConnection conn1 = new SqlConnection(conStr);
+            string sql;
+            sql = "select * from usersall where name ='" + usersall.name + "' ";
+            Boolean flage = false;
+            SqlCommand comm = new SqlCommand(sql, conn1);
+            conn1.Open();
+            SqlDataReader reader = comm.ExecuteReader();
+            if (reader.Read())
+            {
+                flage = true;
+            }
+            reader.Close();
+            if (flage == true)
+            {
+                ViewData["message"] = "name already exists";
+            }
+            else
+            {
+                var role = "admin";
+                sql = "insert into userall (name,password,role) values ('" + usersall.name + "','" + usersall.password + "','" + role + "')";
+                comm = new SqlCommand(sql, conn1);
+                comm.ExecuteNonQuery();
+                return RedirectToAction(nameof(Index));
+            }
+            conn1.Close();
+
+            return View();
+        }
+
         // GET: Usersalls/Details/5
         public async Task<IActionResult> Details(int? id)
         {
