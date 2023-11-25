@@ -32,6 +32,11 @@ namespace FinalPtoject.Controllers
     {
         return View();
     }
+
+        public IActionResult customer_home()
+        {
+            return View();
+        }
         public async Task<IActionResult> addadmin([Bind("name,password")] Usersall usersall)
         {
 
