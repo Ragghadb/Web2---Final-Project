@@ -69,7 +69,7 @@ namespace FinalPtoject.Controllers
         {
 
             var builder = WebApplication.CreateBuilder();
-            string conStr = builder.Configuration.GetConnectionString("Web2ProjectContext");
+            string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
             SqlConnection conn1 = new SqlConnection(conStr);
             string sql;
             sql = "select * from usersall where name ='" + usersall.name + "' ";
@@ -178,6 +178,52 @@ namespace FinalPtoject.Controllers
             }
             return View(usersall);
         }
+
+        // GET: Usersalls/Registration
+        public IActionResult Registration()
+        {
+            return View();
+        }
+
+        // POST: useralls/Registration
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registration([Bind("name,password")] Usersall userall)
+        {
+
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+            SqlConnection conn1 = new SqlConnection(conStr);
+            string sql;
+            sql = "select * from usersall where name ='" + userall.name + "' ";
+            Boolean flage = false;
+            SqlCommand comm = new SqlCommand(sql, conn1);
+            conn1.Open();
+            SqlDataReader reader = comm.ExecuteReader();
+            if (reader.Read())
+            {
+                flage = true;
+            }
+            reader.Close();
+            if (flage == true)
+            {
+                ViewData["message"] = "name already exists";
+            }
+            else
+            {
+                var role = "customer";
+                sql = "insert into usersall (name,password,role) values ('" + userall.name + "','" + userall.password + "','" + role + "')";
+                comm = new SqlCommand(sql, conn1);
+                comm.ExecuteNonQuery();
+                return RedirectToAction(nameof(Index));
+            }
+            conn1.Close();
+
+            return View();
+        }
+
 
         // GET: Usersalls/Edit/5
         public async Task<IActionResult> Edit()

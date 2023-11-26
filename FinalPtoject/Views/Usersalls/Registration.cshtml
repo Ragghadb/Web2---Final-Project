@@ -1,15 +1,40 @@
 ﻿@model FinalPtoject.Models.Usersall
 
 @{
-    ViewData["Title"] = "addadmin";
+    ViewData["Title"] = "Registration";
 }
+<head>
+
+    @section Scripts{
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script>
+            function confirmpass() {
+                var pass1 = document.getElementById("pass1").value;
+                var pass2 = document.getElementById("pass2").value;
+
+                if (pass1 != pass2) {
+                    document.getElementById("passwordlabel").style.color = "red";
+                    document.getElementById("confirmpasslabel").style.color = "red";
+                    document.getElementById("msg").innerHTML = "the passwords do not match!";
+                    return false;
+                }
+
+            }
+        </script>
+    }
+
+
+
+</head>
 
 
 <h4>userall</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="addadmin" id="register">
+        <form asp-action="Registration">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="name" class="control-label"></label>
@@ -17,13 +42,13 @@
                 <span asp-validation-for="name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label name="passwordlabel" class="control-label" id="passwordlabel"></label>
+                <label name="passwordlabel" class="control-label"></label>
                 <input asp-for="password" class="form-control" id="pass1" />
                 <span asp-validation-for="password" class="text-danger"></span>
             </div>
             <div class="form-group">
 
-                <label name="confirmpasslabel" class="control-label" id="confirmpasslabel"></label>
+                <label name="confirmpasslabel" class="control-label"></label>
                 <input name="confirmpass" class="form-control" id="pass2" />
 
             </div>
@@ -41,39 +66,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
-<script>
-
-    function Pass() {
-
-        var pss = document.getElementById("pass1").value;
-        var psscon = document.getElementById("pass2").value;
-
-        if (pss !== psscon) {
-            pass1t.style.color = "red";
-            pass2t.style.color = "red";
-            alert(" Password and password confirmation not match!")
-
-            return false
-        } if (!document.getElementById("pol").checked) {
-
-            alert("Please click agree button!");
-
-            document.getElementById("aLabel").style.color = "red";
-            document.getElementById("aLabel").classList.add("invalid-label");
-
-
-            return false;
-        }
-
-        return true;
-    }
-
-
-</script>
