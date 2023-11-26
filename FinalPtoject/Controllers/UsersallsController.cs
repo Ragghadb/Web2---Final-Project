@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FinalPtoject.Data;
 using FinalPtoject.Models;
 using Microsoft.Data.SqlClient;
+using System.Net.Mail;
 
 namespace FinalPtoject.Controllers
 {
@@ -35,6 +36,33 @@ namespace FinalPtoject.Controllers
 
         public IActionResult customer_home()
         {
+            return View();
+        }
+
+
+        public IActionResult email()
+        {
+            return View();
+
+        }
+
+        [HttpPost]
+        public IActionResult email(string address, string body, string subject)
+        {
+
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+            var mail = new MailMessage();
+            mail.From = new MailAddress("amreemnafea@gmail.com");
+            mail.To.Add(address); // receiver email address
+            mail.Subject = subject;
+            mail.IsBodyHtml = true;
+            mail.Body = body;
+            SmtpServer.Port = 587;
+            SmtpServer.UseDefaultCredentials = false;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("amreemnafea@gmail.com", "Azo112233");
+            SmtpServer.EnableSsl = true;
+            SmtpServer.Send(mail);
+            ViewData["Message"] = "Email sent.";
             return View();
         }
         public async Task<IActionResult> addadmin([Bind("name,password")] Usersall usersall)
