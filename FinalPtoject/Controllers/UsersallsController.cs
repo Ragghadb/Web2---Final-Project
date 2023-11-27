@@ -52,14 +52,14 @@ namespace FinalPtoject.Controllers
 
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
             var mail = new MailMessage();
-            mail.From = new MailAddress("amreemnafea@gmail.com");
+            mail.From = new MailAddress("ireemnafea@gmail.com");
             mail.To.Add(address); // receiver email address
             mail.Subject = subject;
             mail.IsBodyHtml = true;
             mail.Body = body;
             SmtpServer.Port = 587;
             SmtpServer.UseDefaultCredentials = false;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("amreemnafea@gmail.com", "Azo112233");
+            SmtpServer.Credentials = new System.Net.NetworkCredential("ireemnafea@gmail.com", "ztna qidl exzb rkdy");
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
             ViewData["Message"] = "Email sent.";
