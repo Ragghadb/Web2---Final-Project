@@ -1,0 +1,67 @@
+﻿
+@model FinalPtoject.Models.Usersall
+
+@{
+    ViewData["Title"] = "Add Admin";
+}
+
+<h4>Add Admin</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="addadmin" id="register" onsubmit="return validateForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="password" class="control-label"></label>
+                <input asp-for="password" class="form-control" />
+                <span asp-validation-for="password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="confirmpass" class="control-label">Confirm Password</label>
+                <input name="confirmpass" class="form-control" id="confirmpass" />
+            </div>
+           <br />
+            <div class="form-group">
+                <button type="submit" value="Create" class="btn btn-success" >Add</button>
+            </div>
+            <div class="form-group">
+                <label id="msg" class="control-label"></label>
+            </div>
+            <p style="color: red">@ViewData["message"]</p>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script>
+    function validateForm() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmpass").value;
+
+        if (password !== confirmPassword) {
+            alert("Password and password confirmation do not match!");
+            return false;
+        }
+
+        if (!document.getElementById("agreement").checked) {
+            alert("Please agree to the terms and conditions.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
