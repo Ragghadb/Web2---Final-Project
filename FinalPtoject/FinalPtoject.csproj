@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\imgs\**" />
+    <Content Remove="wwwroot\imgs\**" />
+    <EmbeddedResource Remove="wwwroot\imgs\**" />
+    <None Remove="wwwroot\imgs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\cr3.webp" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.23" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.23">
@@ -14,10 +25,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\imgs\" />
   </ItemGroup>
 
 </Project>
