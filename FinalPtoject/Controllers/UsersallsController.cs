@@ -239,6 +239,27 @@ namespace FinalPtoject.Controllers
         }
 
 
+        public async Task<IActionResult> Searchall()
+        {
+
+            {
+                Usersall brItem = new Usersall();
+
+                return View(brItem);
+            }
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> SearchAll(string tit)
+        {
+            var bkItems = await _context.Usersall.FromSqlRaw("select * from usersall where name = '" + tit + "' ").FirstOrDefaultAsync();
+
+            return View(bkItems);
+        }
+
+
+
         // GET: Usersalls/Edit/5
         public async Task<IActionResult> Edit()
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FinalPtoject.Models;
+using FinalPtoject;
 
 namespace FinalPtoject.Data
 {
@@ -15,5 +16,7 @@ namespace FinalPtoject.Data
         }
 
         public DbSet<FinalPtoject.Models.Usersall> Usersall { get; set; } = default!;
+
+        public DbSet<FinalPtoject.getname>? getname { get; set; }
     }
 }
