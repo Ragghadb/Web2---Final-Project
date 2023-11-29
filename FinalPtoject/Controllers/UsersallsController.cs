@@ -31,18 +31,7 @@ namespace FinalPtoject.Controllers
 
 
 
-        public IActionResult User_search()
-        {
-            return View();
-        }
-        [HttpPost]
-  public async Task<IActionResult> User_search(string tit)
-  {
-      var bkItems = await _context.Usersall.FromSqlRaw("select * from usersall where name = '" + tit + "' ").FirstOrDefaultAsync();
-
-      return View(bkItems);
-  }
-
+    
 
         public IActionResult addadmin()
         {
