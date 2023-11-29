@@ -74,7 +74,7 @@ namespace FinalPtoject.Controllers
         }
 
 
-
+  
 
         public IActionResult customer_home()
         {
