@@ -18,15 +18,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .Head2 {
+            
             background-color: black;
             color: rgb(255, 255, 255);
+          
         }
 
-
+   
 
         .container2 {
+     
             background-color: #ffffff;
             color: #94132f;
+      
         }
 
 
@@ -39,7 +43,7 @@
         }
 
 
-
+       
 
 
         .team-image {
@@ -50,16 +54,18 @@
 
 
         .card {
+         
             box-shadow: 0 4px 8px 0#94132f;
+           
         }
 
-        h3 {
+       h3 {
             text-align: center;
             font-size: 25px;
             color: #000000;
         }
 
-
+        
         .card:hover {
             color: #94132f;
         }
@@ -87,12 +93,14 @@
             margin-top: 10px;
             text-align: justify;
             color: #000000;
+           
         }
 
         h1 {
             text-align: center;
             font-size: 25px;
             color: #000000;
+        
     </style>
 </head>
 <body>
@@ -186,7 +194,7 @@
 
             <div class="col-sm-6 col-md-3">
                 <div class="product-item">
-                    <img src="/images/bst5.jpeg" alt="product 4 " width="150" />
+                    <img src="/images/bst5.jpeg" alt="product 4 "width="150" />
                     <div class="eightimg">
                     </div>
                 </div>
@@ -324,6 +332,437 @@
             <p style="padding: 44px; "><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1266.570676921733!2d39.5963212594698!3d24.494582739334238!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15bdbfaf8ceb385d%3A0xc60ee9dd59f69304!2sMedina%20Boulevard!5e0!3m2!1sar!2ssa!4v1684787818236!5m2!1sar!2ssa" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p>
         </section>
     </footer>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Home page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .Head2 {
+            margin-top: 20px;
+            margin-bottom: 0px;
+            background-color: black;
+            color: rgb(255, 255, 255);
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+
+        .container2 {
+            display: flex;
+            background-color: #ffffff;
+            color: #94132f;
+            font-size: 20px;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+        }
+
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #000000;
+        }
+
+        nav {
+            display: flex;
+            background-color: #000000;
+            color: #fff;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+            nav ul {
+                display: flex;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            nav li {
+                margin-right: 20px;
+            }
+
+            nav a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 18px;
+                padding: 10px;
+                transition: all 0.3s ease-in-out;
+            }
+
+                nav a:hover {
+                    color: #94132f;
+                }
+
+        .welcomemsg {
+            text-align: center;
+            color: #94132f;
+        }
+
+        .carousel-caption h3 {
+            color: #000000;
+            font-size: 40px;
+        }
+
+        .jumbotron {
+            background: #fffafa;
+            color: #94132f;
+            height: 30vh;
+            text-align: center;
+            padding-top: 25px;
+            margin-bottom: 0;
+        }
+
+            .jumbotron h1 {
+                font-size: 50px;
+            }
+
+            .jumbotron p {
+                font-size: 25px;
+            }
+
+        .product-item {
+            margin: 1px;
+            position: relative;
+            height: 275px;
+        }
+
+            .product-item img {
+                object-fit: fill;
+                width: 100%;
+                height: 100%;
+            }
+
+
+        .eightimg {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(128, 128, 128, 0.5);
+            color: #fff;
+            text-align: center;
+            padding-top: 20%;
+            transition: opacity 0.5s;
+        }
+
+            .eightimg:hover {
+                opacity: 1;
+            }
+
+
+        .team-image {
+            height: 250px;
+            border-radius: 50%;
+            border: 3px solid#94132f;
+        }
+
+
+        .team-member {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+            .team-member p {
+                font-size: 20px;
+                margin-top: 10px;
+                color: rgb(0, 0, 0);
+                font-weight: bold;
+            }
+
+        .card {
+            margin-bottom: 150px;
+            box-shadow: 0 4px 8px 0#94132f;
+            transition: 0.3s;
+        }
+
+        .card-body h3 {
+            text-align: center;
+            font-size: 25px;
+            color: #000000;
+        }
+
+        .card-body p {
+            font-size: 20px;
+            margin-top: 10px;
+            text-align: justify;
+            color: #000000;
+        }
+
+        .card:hover {
+            color: #94132f;
+        }
+
+        #ma {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!--create navgation bar-->
+    <nav>
+        <img src="imgs/logoo.png" width="50px">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="product.html">Products</a></li>
+            <li><a href="buy.html">Buy</a></li>
+            <li><a href="search.html">Search</a></li>
+            <li><a href="shopping.html"> shopping cart </a></li>
+            <li><a href="login.html">LOGOUT</a></li>
+        </ul>
+    </nav>
+
+    <!-- Read clint name from local storage-->
+    <div class="welcomemsg">
+        <h1>Welcome <span id="client-name"></span></h1>
+    </div>
+
+
+    <!-- crousal with 4 images & animated caption text -->
+    <div id="slider" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img height="500px" width="100%" src="images/bkgr2.jpeg" alt="Slide 1" />
+                <div class="carousel-caption">
+                    <h3 class="animate_animated animatefadeInBottomLeft animateslower animate_infinite">Positive Light Silky Touch Highlighter</h3>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <img height="500px" width="100%" src="images/cr1.jpeg" alt="Slide 2" />
+                <div class="carousel-caption">
+                    <h3 class="animate_animated animateheartBeat animateslower animate_infinite">Liquid Touch Weightless Foundation</h3>
+                </div>
+            </div>
+
+
+            <div class="carousel-item">
+                <img height="500px" width="100%" src="/images/cr2.jpg" alt="Slide 3" />
+                <div class="carousel-caption">
+                    <h3 class="animate_animated animatetada animateslower animate_infinite">Soft Pinch Liquid Blush</h3>
+                </div>
+            </div>
+
+
+            <div class="carousel-item">
+                <img src="~/images/" alt="Slide 4" />
+                <div class="carousel-caption">
+                    <h3 class="animate_animated animateflash animateslower animate_infinite">Find Perfect set of items</h3>
+                </div>
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="carousel-control-prev" href="#slider" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+
+            <a class="carousel-control-next" href="#slider" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+
+    </div>
+
+
+    <!--jumbotron div with company name & disc-->
+    <div class="jumbotron">
+        <h1> Rare Beauty</h1>
+        <p>Together we’re building a safe, welcoming space in beauty and beyond. This is makeup made to feel good in, without hiding what makes you unique. And it’s all vegan and cruelty free.</p>
+    </div>
+
+    <!-- 8 images with hoover effect-->
+    <h2 class="Head2"> Bestellers</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <div class="product-item">
+                    <img src="/images/bst1.jpeg" alt="product 1" />
+                    <div class="eightimg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="product-item">
+                    <img src="/images/bkgr.jpeg" alt="product 2" />
+                    <div class="eightimg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="product-item">
+                    <img src="images/bst3.jpeg" alt="product 3" />
+                    <div class="eightimg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="product-item">
+                    <img src="images/bst5.jpeg" alt="product 4" />
+                    <div class="eightimg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="product-item">
+                    <img src="images/bst4.jpeg" alt="product 5" />
+                    <div class="eightimg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="product-item">
+                    <img src="images/bst6.jpeg" alt="product 6" />
+                    <div class="eightimg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="product-item">
+                    <img src="images/bst7.jpeg" alt="product 7" />
+                    <div class="eightimg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="product-item">
+                    <img src="images/bst8.jpeg" alt="product 8" />
+                    <div class="eightimg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 3 people with round image and title and description -->
+    <h2 class="Head2">Our Team</h2>
+    <div class="container2">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <p>Applications engineer</p>
+                    <img src="images/member.png" alt="Applications engineer" class="team-image rounded-circle" />
+                    <p>Builds software architecture, optimizes existing systems, and supports clients using their programs.</p>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <p>Computer programmer</p>
+                    <img src="images/member.png" alt="Computer programmer" class="team-image rounded-circle" />
+                    <p>Writes, tests, and modifies code used by computers to operate software and complete specific tasks.</p>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <p> IT security specialist</p>
+                    <img src="images/member.png" alt=" IT security specialist" class="team-image rounded-circle" />
+                    <p>Efficiency-focused leader overseeing supply chain, logistics, and store operations at Book Palace.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 services using bootstrap cards -->
+    <h2 class="Head2">Our Services</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <h3>Customer Services</h3>
+                    <p>
+                        Need help? we are here for you!
+                        Chat with us live or call 1-888-892-RARE (7273), Monday–Friday, 7am–4pm PT.
+                        You can also reach us at hello@rarebeauty.com
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="card">
+                    <h3> Worldwide Shipping</h3>
+                    <p>
+                        order generally takes 1-3 days to process.
+                        For orders shipping internationally,processing&shipping generally takes 7-14 days
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="card">
+                    <h3>Returns & Exchanges </h3>
+                    <p>
+                        If you are not satisfied with your Rare Beauty order,
+                        you can return your products within 30 days of when you placed the order to receive a refund
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Footer section that has row with 2 DIVs-->
+    <footer>
+        <h2 class="Head2">Contact Us</h2>
+        <div class="container2">
+            <div class="row">
+                <!--contact us div (email, Facebook tele , etc with icons)-->
+                <div class="col-md-6">
+                    <p><i class="fa fa-facebook-f"> facebook.com/rarebeauty</i>    <i class="fa fa-envelope"> hello@rarebeauty.com</i>   <i class="fa fa-mobile-phone"> +96655091220</i>    <i class="fa fa-map-marker"></i> Madianh </p>
+                </div>
+                <!--company google map location-->
+                <div class="col-md-6">
+                    <div id="ma"></div>
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoLVOv6pfvrJ2NX4rezpyO9zxqxXAV5eo&callback=initMap" async> </script>
+                </div>
+            </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById("client-name").innerHTML = localStorage.getItem("localText");
+
+        function initMap() {
+            navigator.geolocation.getCurrentPosition(onSuccess);
+            function onSuccess(position) {
+                var latlng = { lat: position.coords.latitude, lng: position.coords.longitude };
+                var mymap = new google.maps.Map(document.getElementById('ma'), { zoom: 16, center: latlng });
+                var marker = new google.maps.Marker({ position: latlng, map: mymap });
+            }
+        }
+    </script>
+    </script>
 
 </body>
 </html>

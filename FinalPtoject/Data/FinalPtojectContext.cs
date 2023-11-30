@@ -18,5 +18,9 @@ namespace FinalPtoject.Data
         public DbSet<FinalPtoject.Models.Usersall> Usersall { get; set; } = default!;
 
         public DbSet<FinalPtoject.getname>? getname { get; set; }
+
+        public DbSet<FinalPtoject.Models.order>? order { get; set; }
+
+        public DbSet<FinalPtoject.Models.report>? report { get; set; }
     }
 }
