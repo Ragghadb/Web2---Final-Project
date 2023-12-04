@@ -143,6 +143,16 @@ namespace FinalPtoject.Controllers
             return View(usersall);
         }
 
+
+      
+       public async Task<IActionResult> reem()
+        {
+            return _context.Usersall != null ?
+                        View(await _context.Usersall.ToListAsync()) :
+                        Problem("Entity set 'FinalPtojectContext.Usersall'  is null.");
+        }
+
+
         // GET: Usersalls/Create
         public IActionResult Create()
         {

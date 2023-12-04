@@ -27,10 +27,10 @@ namespace FinalPtoject.Controllers
                           View(await _context.order.ToListAsync()) :
                           Problem("Entity set 'FinalPtojectContext.order'  is null.");
         }
-
+        
         public async Task<IActionResult> report()
         {
-            var orItems = await _context.report.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum (quantity * price) as total from itemsall, orders, usersall where  itemid = itemsall.Id, and custid = usersall.Id group by usersall.id, usersall.name ").ToListAsync();
+            var orItems = await _context.itemsall.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum(quantity * price) as total from itemsall, orders, usersall where  itemid = itemsall.Id, and custid = usersall.Id group by usersall.id, usersall.name ").ToListAsync();
             return View(orItems);
         }
 

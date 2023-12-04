@@ -44,6 +44,19 @@ namespace FinalPtoject.Controllers
 
             return View(items);
         }
+        public async Task<IActionResult> image_slider()
+        {
+            return _context.items != null ?
+                        View(await _context.items.ToListAsync()) :
+                        Problem("Entity set 'FinalPtojectContext.items'  is null.");
+        }
+        public async Task<IActionResult> list()
+        {
+            return _context.items != null ?
+                 View(await _context.items.OrderBy(m => m.category).ToListAsync()) :
+                Problem("Entity set 'FinalPtojectContext.items'  is null.");
+        }
+     
 
         // GET: items/Create
         public IActionResult Create()
@@ -90,6 +103,9 @@ namespace FinalPtoject.Controllers
                 return NotFound();
             }
             return View(items);
+
+
+
         }
 
         // POST: items/Edit/5
@@ -97,33 +113,26 @@ namespace FinalPtoject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,name,descr,price,quantity,discount,category,imagefilename")] items items)
+        public async Task<IActionResult> Edit(IFormFile file, int id, [Bind("Id,name,descr,price,quantity,discount,category,imagefilename")] items items)
         {
+     
             if (id != items.Id)
-            {
-                return NotFound();
-            }
+            { return NotFound(); }
 
-            if (ModelState.IsValid)
+            if (file != null)
             {
-                try
-                {
-                    _context.Update(items);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!itemsExists(items.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                string filename = file.FileName;
+                //  string  ext = Path.GetExtension(file.FileName);
+                string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images"));
+                using (var filestream = new FileStream(Path.Combine(path, filename), FileMode.Create))
+                { await file.CopyToAsync(filestream); }
+
+                items.imagefilename = filename;
             }
+            _context.Update(items);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
             return View(items);
         }
 
