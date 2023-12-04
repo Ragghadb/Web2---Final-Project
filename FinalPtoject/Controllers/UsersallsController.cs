@@ -85,15 +85,7 @@ namespace FinalPtoject.Controllers
         
 			public async Task<IActionResult> admin_home(int? id)
 			{
-				string ss = HttpContext.Session.GetString("Role");
-
-				if (ss == "admin")
-				{
-					var u = await _context.Usersall.FindAsync(id);
-					return View(u);
-				}
-				else
-					return RedirectToAction("login", "Userall");
+                return View();
 			}
 		
 
@@ -159,49 +151,73 @@ namespace FinalPtoject.Controllers
             return View();
         }
 
-        public IActionResult login()
-        {
-            return View();
-        }
+		//login
+		public IActionResult login()
+		{
+			if (!HttpContext.Request.Cookies.ContainsKey("Name"))
+				return View();
+			else
+			{
+				string na = HttpContext.Request.Cookies["Name"].ToString();
+				string ro = HttpContext.Request.Cookies["Role"].ToString();
+				string userid = HttpContext.Request.Cookies["id"].ToString();
+				HttpContext.Session.SetString("Name", na);
+				HttpContext.Session.SetString("Role", ro);
+				HttpContext.Session.SetString("userid", userid);
 
-        [HttpPost, ActionName("login")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> login(string na, string pa)
-        {
-            SqlConnection conn1 = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=Final;Integrated Security=True;Pooling=False");
-            string sql;
-            sql = "SELECT * FROM usersall where name ='" + na + "' and  pass ='" + pa + "' ";
-            SqlCommand comm = new SqlCommand(sql, conn1);
-            conn1.Open();
-            SqlDataReader reader = comm.ExecuteReader();
+				return View();
+			}
+		}
 
-            if (reader.Read())
-            {
-                string role = (string)reader["role"];
-                string id = Convert.ToString((int)reader["Id"]);
-                HttpContext.Session.SetString("Name", na);
-                HttpContext.Session.SetString("Role", role);
-                HttpContext.Session.SetString("userid", id);
-                reader.Close();
-                conn1.Close();
-                if (role == "customer")
-                    return RedirectToAction("catalogue", "books");
+		[HttpPost, ActionName("login")]
+		public async Task<IActionResult> login(string na, string pa, string auto)
+		{
+			SqlConnection conn1 = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=Final;Integrated Security=True");
+			string sql = "SELECT * FROM usersall where name ='" + na + "' and  password ='" + pa + "' ";
+			SqlCommand comm = new SqlCommand(sql, conn1);
+			conn1.Open();
+			SqlDataReader reader = comm.ExecuteReader();
 
-                else
-                    return RedirectToAction("Index", "books");
+			if (reader.Read())
+			{
+				string na1 = (string)reader["name"];
+				string ro = (string)reader["role"];
+				int id = (int)reader["id"];
+				HttpContext.Session.SetString("Name", na1);
+				HttpContext.Session.SetString("Role", ro);
+				HttpContext.Session.SetInt32("userid", id);
 
-            }
-            else
-            {
-                ViewData["Message"] = "wrong user name password";
-                return View();
-            }
-        }
+				reader.Close();
+				conn1.Close();
 
-        // POST: Usersalls/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+				if (auto == "true")
+				{
+					HttpContext.Response.Cookies.Append("Name", na1);
+					HttpContext.Response.Cookies.Append("Role", ro);
+				}
+
+
+				if (ro == "admin")
+				{
+					return RedirectToAction("admin_home", "Usersalls");
+				}
+				else
+				{
+					return RedirectToAction("customer_home", "Usersalls");
+				}
+
+			}
+			else
+			{
+				ViewData["Message"] = "wrong user name or password";
+				return View();
+			}
+		}
+
+		// POST: Usersalls/Create
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,name,password,RegistDate")] Usersall usersall)
         {

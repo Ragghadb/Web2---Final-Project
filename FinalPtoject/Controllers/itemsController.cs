@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalPtoject.Data;
 using FinalPtoject.Models;
+using Microsoft.Data.SqlClient;
 
 namespace FinalPtoject.Controllers
 {
@@ -18,6 +19,31 @@ namespace FinalPtoject.Controllers
         {
             _context = context;
         }
+
+        public async Task<IActionResult> statis()
+        {
+            {
+                string sql = "";
+
+                var builder = WebApplication.CreateBuilder();
+                string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+                SqlConnection conn = new SqlConnection(conStr);
+
+                SqlCommand comm;
+                conn.Open();
+                sql = "SELECT COUNT( Id)  FROM items where category =1";
+                comm = new SqlCommand(sql,conn);
+                ViewData["d1"] = (int)comm.ExecuteScalar();
+
+                sql = "SELECT COUNT( Id)  FROM items where category =2";
+                comm = new SqlCommand(sql, conn);
+                ViewData["d2"] = (int)comm.ExecuteScalar();
+                return View();
+            }
+        }
+
+
+
 
         // GET: items
         public async Task<IActionResult> Index()
