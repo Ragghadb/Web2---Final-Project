@@ -13,13 +13,13 @@
     function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Category');
-        data.addColumn('number', 'Books');
+        data.addColumn('number', 'items');
         data.addRows([
-            ['CS', @ViewData["d1"]],
-            ['IT', @ViewData["d2"]]
+            ['Face', @ViewData["d1"]],
+            ['Lip', @ViewData["d2"]]
         ]);
         var options = {
-            'title': 'Number of Books',
+            'title': 'Number of items',
             'width': 400,
             'height': 300
         };
@@ -35,20 +35,38 @@
 
         <div class="col-md-3">
             <div class='card'>
-                <div class='card-header bg-warning text-center'>Computer Science</div>
-                <div class='card-body'><img src='~/images/cata1.jpg' ; width='50px'></div>
+                <div class='card-header bg-warning text-center'>Face Products</div>
+                <div class='card-body'><img src='~/images/bst4.jpeg' ; width='90px'></div>
                 <div class='card-footer'>
-                    Number of Books <div> @ViewData["d1"] </div>
-                </div>;
+                    Number of Items <div> @ViewData["d1"] </div>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class='card'>
-                <div class='card-header bg-warning text-center'>Information Technology</div>
-                <div class='card-body'><img src="/images/bst5.jpeg" ; width='50px'></div>
+                <div class='card-header bg-warning text-center'>Lip Products</div>
+                <div class='card-body'><img src="~/images/bst7.jpeg" width='90px'></div>
                 <div class='card-footer'>
-                    Number of Books <div>@ViewData["d2"] </div>
-                </div>;
+                    Number of Items <div>@ViewData["d2"] </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class='card'>
+                <div class='card-header bg-warning text-center'>Total Products</div>
+                <div class='card-body'><img src="~/images/bst1.jpeg" width='90px'></div>
+                <div class='card-footer'>
+                    Number of Items <div>"8" </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class='card'>
+                <div class='card-header bg-warning text-center'>Lip Products</div>
+                <div class='card-body'><img src="~/images/bst4.jpeg" width='90px'></div>
+                <div class='card-footer'>
+                    Number of Items <div>"9" </div>
+                </div>
             </div>
         </div>
     </div>
