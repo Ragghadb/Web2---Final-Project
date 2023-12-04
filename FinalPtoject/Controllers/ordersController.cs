@@ -30,11 +30,11 @@ namespace FinalPtoject.Controllers
 
         public async Task<IActionResult> report()
         {
-            var orItems = await _context.report.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum(quantity * price) as total from itemsall, orders, usersall where  itemid = itemsall.Id, and custid = usersall.Id group by usersall.id, usersall.name ").ToListAsync();
+            var orItems = await _context.report.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum (quantity * price) as total from itemsall, orders, usersall where  itemid = itemsall.Id, and custid = usersall.Id group by usersall.id, usersall.name ").ToListAsync();
             return View(orItems);
         }
 
-     
+
 
         // GET: orders/Details/5
         public async Task<IActionResult> Details(int? id)
