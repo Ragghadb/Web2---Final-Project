@@ -48,9 +48,11 @@ namespace FinalPtoject.Controllers
         // GET: items
         public async Task<IActionResult> Index()
         {
-              return _context.items != null ? 
-                          View(await _context.items.ToListAsync()) :
-                          Problem("Entity set 'FinalPtojectContext.items'  is null.");
+            ViewData["role"] = HttpContext.Session.GetString("Role");
+
+            return _context.items != null ?
+                  View(await _context.items.ToListAsync()) :
+                 Problem("Entity set 'FinalPtojectContext.items'  is null.");
         }
 
         // GET: items/Details/5

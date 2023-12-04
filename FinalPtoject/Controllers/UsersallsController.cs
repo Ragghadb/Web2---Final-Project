@@ -172,7 +172,7 @@ namespace FinalPtoject.Controllers
 		[HttpPost, ActionName("login")]
 		public async Task<IActionResult> login(string na, string pa, string auto)
 		{
-			SqlConnection conn1 = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=Final;Integrated Security=True");
+			SqlConnection conn1 = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=Final;Integrated Security=True;Pooling=False");
 			string sql = "SELECT * FROM usersall where name ='" + na + "' and  password ='" + pa + "' ";
 			SqlCommand comm = new SqlCommand(sql, conn1);
 			conn1.Open();
