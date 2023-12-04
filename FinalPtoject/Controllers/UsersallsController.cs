@@ -85,6 +85,21 @@ namespace FinalPtoject.Controllers
             return View();
         }
 
+        
+			public async Task<IActionResult> admin_home(int? id)
+			{
+				string ss = HttpContext.Session.GetString("Role");
+
+				if (ss == "admin")
+				{
+					var u = await _context.Usersall.FindAsync(id);
+					return View(u);
+				}
+				else
+					return RedirectToAction("login", "Userall");
+			}
+		
+
 
         public IActionResult email()
         {

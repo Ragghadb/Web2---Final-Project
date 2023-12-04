@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewData["Title"] = "admin_home";
+}
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<style>
+ body {
+ margin: 0;
+  background-image: url("imgs/bst8.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;}
+
+nav {
+	display: flex;
+  background-color: #000000;
+	color: #fff;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;}
+
+nav ul {
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;}
+
+nav li {
+	margin-right: 20px;}
+
+nav a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 18px;
+	padding: 10px;
+	transition: all 0.3s ease-in-out;}
+
+nav a:hover {
+	color:  #94132f;}
+
+
+ </style>
+
+<body>
+	<!--create navgation bar-->
+	<nav>
+		<img src="imgs/logoo.png" width="50px">
+		<ul>
+			<li><a href="admin_home">Home</a></li>
+			<li><a href="email">Item managment</a></li>
+			<li><a href="buy">List item</a></li>
+			<li><a href="email">Send email</a></li>
+			<li><a href="shopping">User search</a></li>
+			<li><a href="login">Report page</a></li>
+			<li><a href="addadmin">Add admin</a></li>
+			<li><a href="login">Dashboard</a></li>
+
+		</ul>
+	</nav>
+
+	<!-- Read clint name from local storage-->
+	<div class="welcomemsg">
+		<h1>Welcome <span id="client-name"></span></h1>
+	</div>
+
+</body>
