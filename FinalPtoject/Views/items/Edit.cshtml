@@ -43,13 +43,15 @@
                 <input asp-for="category" class="form-control" />
                 <span asp-validation-for="category" class="text-danger"></span>
             </div>
+            <img src="~/images/@Model.imagefilename" height="150" />
             <div class="form-group">
                 <label asp-for="imagefilename" class="control-label"></label>
                 <input asp-for="imagefilename" class="form-control" />
-                <span asp-validation-for="imagefilename" class="text-danger"></span>
+                <label class="control-label">Pic</label>
+                <input type="file" class="form-control" name="file" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Update" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -59,6 +61,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
