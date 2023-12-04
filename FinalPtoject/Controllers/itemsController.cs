@@ -7,103 +7,99 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalPtoject.Data;
 using FinalPtoject.Models;
-using static NuGet.Packaging.PackagingConstants;
 
 namespace FinalPtoject.Controllers
 {
-    public class ordersController : Controller
+    public class itemsController : Controller
     {
         private readonly FinalPtojectContext _context;
 
-        public ordersController(FinalPtojectContext context)
+        public itemsController(FinalPtojectContext context)
         {
             _context = context;
         }
 
-        // GET: orders
+        // GET: items
         public async Task<IActionResult> Index()
         {
-              return _context.order != null ? 
-                          View(await _context.order.ToListAsync()) :
-                          Problem("Entity set 'FinalPtojectContext.order'  is null.");
+              return _context.items != null ? 
+                          View(await _context.items.ToListAsync()) :
+                          Problem("Entity set 'FinalPtojectContext.items'  is null.");
         }
 
-        public async Task<IActionResult> report()
-        {
-            var orItems = await _context.report.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum(quantity * price) as total from itemsall, orders, usersall where  itemid = itemsall.Id, and custid = usersall.Id group by usersall.id, usersall.name ").ToListAsync();
-            return View(orItems);
-        }
-
-     
-
-        // GET: orders/Details/5
+        // GET: items/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.order == null)
+            if (id == null || _context.items == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.order
+            var items = await _context.items
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
+            if (items == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(items);
         }
 
-     
-
-
-
-        // GET: orders/Create
+        // GET: items/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: orders/Create
+        // POST: items/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,itemid,userid,quantity,buydate")] order order)
-        {
-            if (ModelState.IsValid)
+        public async Task<IActionResult> Create(IFormFile file,[Bind("Id,name,descr,price,quantity,discount,category")] items items)
+        
             {
-                _context.Add(order);
+                if (file != null)
+                {
+                    string filename = file.FileName;
+                    //  string  ext = Path.GetExtension(file.FileName);
+                    string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images"));
+                    using (var filestream = new FileStream(Path.Combine(path, filename), FileMode.Create))
+                    { await file.CopyToAsync(filestream); }
+
+                    items.imagefilename = filename;
+                }
+
+                _context.Add(items);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(order);
+            
         }
 
-        // GET: orders/Edit/5
+        // GET: items/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.order == null)
+            if (id == null || _context.items == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.order.FindAsync(id);
-            if (order == null)
+            var items = await _context.items.FindAsync(id);
+            if (items == null)
             {
                 return NotFound();
             }
-            return View(order);
+            return View(items);
         }
 
-        // POST: orders/Edit/5
+        // POST: items/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,itemid,userid,quantity,buydate")] order order)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,name,descr,price,quantity,discount,category,imagefilename")] items items)
         {
-            if (id != order.Id)
+            if (id != items.Id)
             {
                 return NotFound();
             }
@@ -112,12 +108,12 @@ namespace FinalPtoject.Controllers
             {
                 try
                 {
-                    _context.Update(order);
+                    _context.Update(items);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!orderExists(order.Id))
+                    if (!itemsExists(items.Id))
                     {
                         return NotFound();
                     }
@@ -128,49 +124,49 @@ namespace FinalPtoject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(order);
+            return View(items);
         }
 
-        // GET: orders/Delete/5
+        // GET: items/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.order == null)
+            if (id == null || _context.items == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.order
+            var items = await _context.items
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
+            if (items == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(items);
         }
 
-        // POST: orders/Delete/5
+        // POST: items/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.order == null)
+            if (_context.items == null)
             {
-                return Problem("Entity set 'FinalPtojectContext.order'  is null.");
+                return Problem("Entity set 'FinalPtojectContext.items'  is null.");
             }
-            var order = await _context.order.FindAsync(id);
-            if (order != null)
+            var items = await _context.items.FindAsync(id);
+            if (items != null)
             {
-                _context.order.Remove(order);
+                _context.items.Remove(items);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool orderExists(int id)
+        private bool itemsExists(int id)
         {
-          return (_context.order?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.items?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

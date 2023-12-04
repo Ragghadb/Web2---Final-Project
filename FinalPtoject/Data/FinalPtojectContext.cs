@@ -22,5 +22,7 @@ namespace FinalPtoject.Data
         public DbSet<FinalPtoject.Models.order>? order { get; set; }
 
         public DbSet<FinalPtoject.Models.report>? report { get; set; }
+
+        public DbSet<FinalPtoject.Models.items>? items { get; set; }
     }
 }

@@ -74,10 +74,7 @@ namespace FinalPtoject.Controllers
         }
 
 
-        public IActionResult m()
-        {
-            return View();
-        }
+     
 
 
         public IActionResult customer_home()
