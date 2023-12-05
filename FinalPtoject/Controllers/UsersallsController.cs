@@ -149,68 +149,6 @@ namespace FinalPtoject.Controllers
             return View();
         }
 
-		//login
-		public IActionResult login()
-		{
-			if (!HttpContext.Request.Cookies.ContainsKey("Name"))
-				return View();
-			else
-			{
-				string na = HttpContext.Request.Cookies["Name"].ToString();
-				string ro = HttpContext.Request.Cookies["Role"].ToString();
-				string userid = HttpContext.Request.Cookies["id"].ToString();
-				HttpContext.Session.SetString("Name", na);
-				HttpContext.Session.SetString("Role", ro);
-				HttpContext.Session.SetString("userid", userid);
-
-				return View();
-			}
-		}
-
-		[HttpPost, ActionName("login")]
-		public async Task<IActionResult> login(string na, string pa, string auto)
-		{
-			SqlConnection conn1 = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=Final;Integrated Security=True;Pooling=False");
-			string sql = "SELECT * FROM usersall where name ='" + na + "' and  password ='" + pa + "' ";
-			SqlCommand comm = new SqlCommand(sql, conn1);
-			conn1.Open();
-			SqlDataReader reader = comm.ExecuteReader();
-
-			if (reader.Read())
-			{
-				string na1 = (string)reader["name"];
-				string ro = (string)reader["role"];
-				int id = (int)reader["id"];
-				HttpContext.Session.SetString("Name", na1);
-				HttpContext.Session.SetString("Role", ro);
-				HttpContext.Session.SetInt32("userid", id);
-
-				reader.Close();
-				conn1.Close();
-
-				if (auto == "true")
-				{
-					HttpContext.Response.Cookies.Append("Name", na1);
-					HttpContext.Response.Cookies.Append("Role", ro);
-				}
-
-
-				if (ro == "admin")
-				{
-					return RedirectToAction("admin_home", "Usersalls");
-				}
-				else
-				{
-					return RedirectToAction("customer_home", "Usersalls");
-				}
-
-			}
-			else
-			{
-				ViewData["Message"] = "wrong user name or password";
-				return View();
-			}
-		}
 
 		// POST: Usersalls/Create
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -227,6 +165,70 @@ namespace FinalPtoject.Controllers
                 return RedirectToAction(nameof(login));
             }
             return View(usersall);
+        }
+
+
+        //login
+        public IActionResult login()
+        {
+            if (!HttpContext.Request.Cookies.ContainsKey("Name"))
+                return View();
+            else
+            {
+                string na = HttpContext.Request.Cookies["Name"].ToString();
+                string ro = HttpContext.Request.Cookies["Role"].ToString();
+                string userid = HttpContext.Request.Cookies["id"].ToString();
+                HttpContext.Session.SetString("Name", na);
+                HttpContext.Session.SetString("Role", ro);
+                HttpContext.Session.SetString("userid", userid);
+
+                return View();
+            }
+        }
+
+        [HttpPost, ActionName("login")]
+        public async Task<IActionResult> login(string na, string pa, string auto)
+        {
+            SqlConnection conn1 = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=Final;Integrated Security=True;Pooling=False");
+            string sql = "SELECT * FROM usersall where name ='" + na + "' and  password ='" + pa + "' ";
+            SqlCommand comm = new SqlCommand(sql, conn1);
+            conn1.Open();
+            SqlDataReader reader = comm.ExecuteReader();
+
+            if (reader.Read())
+            {
+                string na1 = (string)reader["name"];
+                string ro = (string)reader["role"];
+                int id = (int)reader["id"];
+                HttpContext.Session.SetString("Name", na1);
+                HttpContext.Session.SetString("Role", ro);
+                HttpContext.Session.SetInt32("userid", id);
+
+                reader.Close();
+                conn1.Close();
+
+                if (auto == "true")
+                {
+                    HttpContext.Response.Cookies.Append("Name", na1);
+                    HttpContext.Response.Cookies.Append("Role", ro);
+                }
+
+
+                if (ro == "admin")
+                {
+                    return RedirectToAction("admin_home", "Usersalls");
+                }
+                else
+                {
+                    return RedirectToAction("customer_home", "Usersalls");
+                }
+
+            }
+            else
+            {
+                ViewData["Message"] = "wrong user name or password";
+                return View();
+            }
         }
 
         // GET: Usersalls/Registration

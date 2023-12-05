@@ -1,27 +1,26 @@
-﻿
-@{
-    ViewData["Title"] = "login";
-}
-
-
-<h2>login</h2>
-<body>
-    <div class="main">
-        <h1>Login</h1>
+﻿<body>
+    <div class="row">
+        <div class="col-md-4">
         <form asp-action="login" id="login-form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="na" maxlength="12" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="pa" required>
-            <label><input type="checkbox" name="auto"> Remember me</label><br>
+                <h1>Login</h1>
+                <label for="username">Username:</label> <br />
+                <input type="text" id="username" name="na" maxlength="12" required><br />
+            
+            <label for="password">Password:</label> <br />
+                <input type="password" id="password" name="pa" required> <br />
+
+            <label>
+                <input type="checkbox" name="auto"> Remember me
+            </label><br>
+
             <p class="error">
                 @ViewData["Message"]
             </p>
-            <button class="btn btn-success" type="submit">Login</button>
 
+            <button class="btn btn-success" type="submit">Login</button>
         </form>
+
         <p>Don't have an account? <a asp-action="registration">Register here</a></p>
     </div>
+    </div>
 </body>
-
-</html>
