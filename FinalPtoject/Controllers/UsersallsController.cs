@@ -271,7 +271,7 @@ namespace FinalPtoject.Controllers
                 sql = "insert into usersall (name,password,role) values ('" + userall.name + "','" + userall.password + "','" + role + "')";
                 comm = new SqlCommand(sql, conn1);
                 comm.ExecuteNonQuery();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(customer_home));
             }
             conn1.Close();
 
