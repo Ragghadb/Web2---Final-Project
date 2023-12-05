@@ -33,7 +33,7 @@ namespace FinalPtoject.Controllers
 
         public async Task<IActionResult> order_detail(int? idd)
         {
-            var orItems = await _context.orders.FromSqlRaw
+            var orItems = await _context.order.FromSqlRaw
                 ("select usersall.id, usersall.name as username, orders.buydate as BuyDate, items.price * orders.quantity as TotalPrice," +
                 " orders.quantity as quantity from orders, usersall, items  where  userid =" +
                 " '" + idd + "'  and usersall.Id = orders.userid and orders.itemid = items.id   ").ToListAsync();
