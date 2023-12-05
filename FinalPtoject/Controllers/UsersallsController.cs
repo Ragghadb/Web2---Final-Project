@@ -9,6 +9,7 @@ using FinalPtoject.Data;
 using FinalPtoject.Models;
 using Microsoft.Data.SqlClient;
 using System.Net.Mail;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace FinalPtoject.Controllers
 {
@@ -289,13 +290,12 @@ namespace FinalPtoject.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> customer_search(string tit)
         {
             var bkItems = await _context.Usersall.FromSqlRaw("select * from usersall where name = '" + tit + "' ").FirstOrDefaultAsync();
-
             return View(bkItems);
         }
+
 
 
 
