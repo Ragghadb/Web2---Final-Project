@@ -31,15 +31,11 @@ namespace FinalPtoject.Controllers
 
 
 
-        public async Task<IActionResult> report()
-        {
-            var orItems = await _context.orders.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum (quantity * price) as total from itemsall, orders, usersall where  itemid = itemsall.Id, and custid = usersall.Id group by usersall.id, usersall.name ").ToListAsync();
-            return View(orItems);
-        }
+
 
         public async Task<IActionResult> order_detail(int? idd)
         {
-            var orItems = await _context.orders.FromSqlRaw
+            var orItems = await _context.order.FromSqlRaw
                 ("select usersall.id, usersall.name as username, orders.buydate as BuyDate, items.price * orders.quantity as TotalPrice," +
                 " orders.quantity as quantity from orders, usersall, items  where  userid =" +
                 " '" + idd + "'  and usersall.Id = orders.userid and orders.itemid = items.id   ").ToListAsync();

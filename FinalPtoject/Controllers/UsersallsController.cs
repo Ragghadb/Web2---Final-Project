@@ -278,7 +278,7 @@ namespace FinalPtoject.Controllers
         }
 
 
-        public async Task<IActionResult> Searchall()
+        public async Task<IActionResult> customer_search()
         {
 
             {
@@ -290,7 +290,7 @@ namespace FinalPtoject.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> SearchAll(string tit)
+        public async Task<IActionResult> customer_search(string tit)
         {
             var bkItems = await _context.Usersall.FromSqlRaw("select * from usersall where name = '" + tit + "' ").FirstOrDefaultAsync();
 
