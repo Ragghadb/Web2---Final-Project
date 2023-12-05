@@ -8,19 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using FinalPtoject.Data;
 using FinalPtoject.Models;
 using static NuGet.Packaging.PackagingConstants;
+using NuGet.Protocol.Plugins;
 using Microsoft.Data.SqlClient;
-using System.Net;
 
 namespace FinalPtoject.Controllers
 {
-    public class ordersController : Controller
+    public class orderssController : Controller
     {
         private readonly FinalPtojectContext _context;
 
-        public ordersController(FinalPtojectContext context)
+        public orderssController(FinalPtojectContext context)
         {
             _context = context;
         }
+
 
         // GET: orders
         public async Task<IActionResult> Index()
@@ -29,25 +30,81 @@ namespace FinalPtoject.Controllers
                           View(await _context.order.ToListAsync()) :
                           Problem("Entity set 'FinalPtojectContext.order'  is null.");
         }
-
-
-        public async Task<IActionResult> order_detail(int? idd)
+        public async Task<IActionResult> k (int? id)
         {
-            var orItems = await _context.orders.FromSqlRaw
-                ("select usersall.id, usersall.name as username, orders.buydate as BuyDate, items.price * orders.quantity as TotalPrice," +
-                " orders.quantity as quantity from orders, usersall, items  where  userid =" +
-                " '" + idd + "'  and usersall.Id = orders.userid and orders.itemid = items.id   ").ToListAsync();
-            return View(orItems);
+            string ss = HttpContext.Session.GetString("Role");
+
+            if (ss == "customer")
+            {
+                var items = await _context.items.FindAsync(id);
+                return View(items);
+            }
+            else
+                return RedirectToAction("login", "Home");
         }
+
+
+
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> k (int itemId, int quantity)
+        {
+            order order = new order();
+            order.itemid = itemId;
+            order.quantity = quantity;
+            order.userid = Convert.ToInt32(HttpContext.Session.GetString("userid"));
+            order.buydate = DateTime.Today;
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+            SqlConnection conn = new SqlConnection(conStr);
+            string sql;
+            int qt = 0;
+            sql = "select * from items where (id ='" + order.itemid + "' )";
+            SqlCommand comm = new SqlCommand(sql, conn);
+            conn.Open();
+            SqlDataReader reader = comm.ExecuteReader();
+            if (reader.Read())
+            {
+                qt = (int)reader["quantity"]; // store quantity
+            }
+            reader.Close();
+            conn.Close();
+            if (order.quantity > qt)
+            {
+                ViewData["message"] = "maxiumam order quantity sould be " + qt;
+                var items = await _context.items.FindAsync(itemId);
+                return View(items);
+            }
+            else
+            {
+                _context.Add(order);
+                await _context.SaveChangesAsync();
+                sql = "UPDATE items  SET quantity  = quantity   - '" + order.quantity + "'  where (id ='" + order.itemid + "' )";
+                comm = new SqlCommand(sql, conn);
+                conn.Open();
+                comm.ExecuteNonQuery();
+                conn.Close();
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+
+
+
+
+
+
 
         public async Task<IActionResult> report()
         {
-            var orItems = await _context.itemlsst.FromSqlRaw
-                ("select usersall.id as Id, usersall.name as customername, " +
-                "sum(quantity * price) as total from itemsall, orders, usersall where  itemid = itemsall.Id, and custid = usersall.Id group by usersall.id, usersall.name ").ToListAsync();
+            var orItems = await _context.orders.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum (quantity * price) as total from itemsall, orders, usersall where  itemid = itemsall.Id, and custid = usersall.Id group by usersall.id, usersall.name ").ToListAsync();
             return View(orItems);
-
         }
+
+
 
         // GET: orders/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -67,49 +124,31 @@ namespace FinalPtoject.Controllers
             return View(order);
         }
 
+     
+
+
+
         // GET: orders/Create
-        public async Task<IActionResult> Create(int? id)
+        public IActionResult Create()
         {
-            var items = await _context.items.FindAsync(id);
-            return View(items);
+            return View();
         }
 
         // POST: orders/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int itemid, int quantity)
+        public async Task<IActionResult> Create([Bind("Id,itemid,userid,quantity,buydate")] order order)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                // If not valid, return the view with error messages
-                return View(await _context.items.FindAsync(itemid));
+                _context.Add(order);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-
-            order order = new order
-            {
-                itemid = itemid,
-                quantity = quantity,
-                userid = Convert.ToInt32(HttpContext.Session.GetString("userid")),
-                buydate = DateTime.Today
-            };
-
-            _context.Add(order);
-            await _context.SaveChangesAsync();
-
-            // Update item quantity using Entity Framework
-            var item = await _context.items.FindAsync(itemid);
-            if (item != null)
-            {
-                item.quantity -= quantity;
-            }
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(order_detail));
+            return View(order);
         }
-
-
-
 
         // GET: orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
