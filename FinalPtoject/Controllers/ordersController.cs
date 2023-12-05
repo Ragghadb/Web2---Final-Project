@@ -36,7 +36,62 @@ namespace FinalPtoject.Controllers
         }
 
 
-      
+        public async Task<IActionResult> Buy(int? id)
+        {
+            string ss = HttpContext.Session.GetString("role");
+
+            if (ss == "customer")
+            {
+                var ord = await _context.order.FindAsync(id);
+                return View(ord);
+            }
+            else
+                return RedirectToAction("login", "Usersall");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Buy(int itemId, int quantity)
+        {
+            order order = new order();
+            order.itemid = itemId;
+            order.quantity = quantity;
+            order.userid = Convert.ToInt32(HttpContext.Session.GetString("userid"));
+            order.buydate = DateTime.Today;
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("FinalProjectContext");
+            SqlConnection conn = new SqlConnection(conStr);
+            string sql;
+            int qt = 0;
+            sql = "select * from orders where (id ='" + order.itemid + "' )";
+            SqlCommand comm = new SqlCommand(sql, conn);
+            conn.Open();
+            SqlDataReader reader = comm.ExecuteReader();
+            if (reader.Read())
+            {
+                qt = (int)reader["bookquantity"]; // store quantity
+            }
+            reader.Close();
+            conn.Close();
+            if (order.quantity > qt)
+            {
+                ViewData["message"] = "maxiumam order quantity sould be " + qt;
+                var ord = await _context.order.FindAsync(itemId);
+                return View(ord);
+            }
+            else
+            {
+                _context.Add(order);
+                await _context.SaveChangesAsync();
+                sql = "UPDATE items  SET quantity  = quantity   - '" + order.quantity + "'  where (id ='" + order.itemid + "' )";
+                comm = new SqlCommand(sql, conn);
+                conn.Open();
+                comm.ExecuteNonQuery();
+                conn.Close();
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+
 
         // GET: orders/Details/5
         public async Task<IActionResult> Details(int? id)

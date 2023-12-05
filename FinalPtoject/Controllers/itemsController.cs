@@ -38,6 +38,10 @@ namespace FinalPtoject.Controllers
                 sql = "SELECT COUNT( Id)  FROM items where category =2";
                 comm = new SqlCommand(sql, conn);
                 ViewData["d2"] = (int)comm.ExecuteScalar();
+
+                sql = "SELECT COUNT( Id)  FROM items ";
+                comm = new SqlCommand(sql, conn);
+                ViewData["totalItem"] = (int)comm.ExecuteScalar();
                 return View();
             }
         }
