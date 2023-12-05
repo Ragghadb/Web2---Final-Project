@@ -30,6 +30,73 @@ namespace FinalPtoject.Controllers
                           Problem("Entity set 'FinalPtojectContext.order'  is null.");
         }
 
+        public async Task<IActionResult> Buy(int? Id)
+        {
+            var item = await _context.items.FindAsync(Id);
+            string ss = HttpContext.Session.GetString("role");
+            if (ss == "admin")
+                return View(item);
+            else
+                return RedirectToAction("login", "Usersalls"); }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Buy(int itemid, int quantity)
+        {
+            order order = new order();
+            order.itemid = itemid;
+            order.quantity = quantity;
+            order.userid = Convert.ToInt32(HttpContext.Session.GetString("userid"));
+            order.buydate = DateTime.Today;
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+            SqlConnection conn = new SqlConnection(conStr);
+            string sql;
+            int qt = 0;
+            sql = "select * from items where (id ='" + order.itemid + "' )";
+            SqlCommand comm = new SqlCommand(sql, conn);
+            conn.Open();
+            SqlDataReader reader = comm.ExecuteReader();
+            if (reader.Read())
+            {
+                qt = (int)reader["quantity"]; // store quantity
+            }
+            reader.Close();
+            conn.Close();
+            if (order.quantity > qt)
+            {
+                ViewData["message"] = "Maximum order quantity should be " + qt;
+                var items = await _context.items.FindAsync(itemid);
+                return View(items);
+            }
+            else
+            {
+                _context.Add(order);
+                await _context.SaveChangesAsync();
+                sql = "UPDATE items SET quantity = quantity - " + order.quantity + " where id ='" + order.itemid + "'";
+                comm = new SqlCommand(sql, conn);
+                conn.Open();
+                comm.ExecuteNonQuery();
+                conn.Close();
+                ViewData["message"] = "Thank you for your purchase!";
+                var items = await _context.items.FindAsync(itemid);
+                return RedirectToAction(nameof(Index));
+
+
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         public async Task<IActionResult> order_detail(int? idd)
         {

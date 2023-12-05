@@ -19,14 +19,13 @@ namespace FinalPtoject.Data
 
         public DbSet<FinalPtoject.getname>? getname { get; set; }
 
-        public DbSet<FinalPtoject.Models.order>? order { get; set; }
+        public DbSet<FinalPtoject.Models.order>? orders { get; set; }
 
-        public DbSet<FinalPtoject.Models.orderdetail>? orders { get; set; }
+        public DbSet<FinalPtoject.Models.orderdetail>? order { get; set; }
     
 
         public DbSet<FinalPtoject.Models.items>? items { get; set; }
 
-        public DbSet<FinalPtoject.Models.orderdetail>? orderdetail_1 { get; set; }
         public DbSet<FinalPtoject.Models.Report>? itemlsst { get; set; }
     }
 }
