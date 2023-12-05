@@ -1,0 +1,87 @@
+﻿
+
+
+@model FinalPtoject.Models.Usersall
+
+@{
+    ViewData["Title"] = "addadmin";
+}
+
+
+
+<h4>userall</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="addadmin" id="register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="  name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label name="passwordlabel" class="control-label" id="passwordlabel">Password:</label>
+                <input asp-for="password" class="form-control" id="pass1" />
+                <span asp-validation-for="password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+
+                <label name="confirmpasslabel" class="control-label" id="confirmpasslabel">confirm password:</label>
+                <input name="confirmpass" class="form-control" id="pass2" />
+
+            </div>
+            <div class="form-group">
+                <button onclick="confirmpass()" type="submit" value="Create" class="btn btn-primary">SUBMIT</button>
+            </div>
+            <div class="form-group">
+                <label name="msg" class="control-label" id="msg"></label>
+            </div>
+            <p style="color:red">@ViewData["message"]</p>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+        const registerform = document.getElementById('register');
+        registerform.addEventListener('submit', function (event) {
+
+            const pass1 = document.getElementById('pass1').value;
+            const pass1 = document.getElementById('pass2').value;
+
+            if (pass1 != pass2) {
+
+                event.preventDefault();
+                document.getElementById('passwordlabel').style.color = "red";
+                document.getElementById('confirmpasslabel').style.color = "red";
+                document.getElementById('msg').innerHTML = "the passwords do not match!";
+                return false;
+
+            }
+        }
+
+        /* function confirmpass() {
+             var pass1 = document.getElementById("pass1").value;
+             var pass2 = document.getElementById("pass2").value;
+
+             if (pass1 != pass2) {
+                 document.getElementById("passwordlabel").style.color = "red";
+                 document.getElementById("confirmpasslabel").style.color = "red";
+                 document.getElementById("msg").innerHTML = "the passwords do not match!";
+                 return false;
+             }
+
+         } */
+
+    </script>
+    }

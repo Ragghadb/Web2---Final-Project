@@ -31,7 +31,7 @@ namespace FinalPtoject.Controllers
 
 
 
-    
+   
 
         public IActionResult addadmin()
         {
@@ -39,14 +39,15 @@ namespace FinalPtoject.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> addadmin([Bind("name,password")] Usersall Usersall)
         {
 
             var builder = WebApplication.CreateBuilder();
-            string conStr = builder.Configuration.GetConnectionString("FinalPtoject");
+            string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
             SqlConnection conn1 = new SqlConnection(conStr);
             string sql;
-            sql = "select * from userall where name ='" + Usersall.name + "' ";
+            sql = "select * from usersall where name ='" + Usersall.name + "' ";
             Boolean flage = false;
             SqlCommand comm = new SqlCommand(sql, conn1);
             conn1.Open();
@@ -63,7 +64,7 @@ namespace FinalPtoject.Controllers
             else
             {
                 var role = "admin";
-                sql = "insert into userall (name,password,role) values ('" + Usersall.name + "','" + Usersall.password + "','" + role + "')";
+                sql = "insert into usersall (name,password,role) values ('" + Usersall.name + "','" + Usersall.password + "','" + role + "')";
                 comm = new SqlCommand(sql, conn1);
                 comm.ExecuteNonQuery();
                 return RedirectToAction(nameof(Index));
@@ -74,7 +75,7 @@ namespace FinalPtoject.Controllers
         }
 
 
-     
+
 
 
         public IActionResult customer_home()
