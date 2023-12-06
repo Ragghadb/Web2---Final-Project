@@ -234,48 +234,50 @@ namespace FinalPtoject.Controllers
         }
 
         // GET: Usersalls/Registration
-        public IActionResult Registration()
+        public IActionResult registration()
         {
+
             return View();
         }
 
-        // POST: useralls/Registration
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registration([Bind("name,password")] Usersall userall)
+        public IActionResult registration(string name, string password)
         {
-
             var builder = WebApplication.CreateBuilder();
             string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
-            SqlConnection conn1 = new SqlConnection(conStr);
+            SqlConnection conn = new SqlConnection(conStr);
+            conn.Open();
             string sql;
-            sql = "select * from usersall where name ='" + userall.name + "' ";
             Boolean flage = false;
-            SqlCommand comm = new SqlCommand(sql, conn1);
-            conn1.Open();
+            sql = "select * from usersall where name = '" + name + "'";
+            SqlCommand comm = new SqlCommand(sql, conn);
             SqlDataReader reader = comm.ExecuteReader();
             if (reader.Read())
             {
+
                 flage = true;
             }
             reader.Close();
             if (flage == true)
             {
-                ViewData["message"] = "name already exists";
+                ViewData["error"] = "name already exists";
+                conn.Close();
+                return View();
             }
             else
             {
-                var role = "customer";
-                sql = "insert into usersall (name,password,role) values ('" + userall.name + "','" + userall.password + "','" + role + "')";
-                comm = new SqlCommand(sql, conn1);
+                HttpContext.Session.SetString("Name", name);
+                HttpContext.Session.SetString("Role", "customer");
+                sql = "insert into usersall (name,password,Registdate,role) values ('" + name + "','" + password + "',CURRENT_TIMESTAMP,'customer')";
+                comm = new SqlCommand(sql, conn);
                 comm.ExecuteNonQuery();
+                sql = "select id from usersall where name = '" + name + "'";
+                comm = new SqlCommand(sql, conn);
+                int userId = (int)comm.ExecuteScalar();
+                HttpContext.Session.SetInt32("userid", userId);
+
                 return RedirectToAction(nameof(customer_home));
             }
-            conn1.Close();
-
-            return View();
         }
 
 

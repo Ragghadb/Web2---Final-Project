@@ -30,16 +30,16 @@ namespace FinalPtoject.Controllers
                           Problem("Entity set 'FinalPtojectContext.order'  is null.");
         }
 
-        public async Task<IActionResult> Buy(int? Id)
+
+
+
+
+
+        public async Task<IActionResult> Buy(int? id)
         {
-            var item = await _context.items.FindAsync(Id);
-            string ss = HttpContext.Session.GetString("role");
-            if (ss == "admin")
+                var item = await _context.items.FindAsync(id);
                 return View(item);
-            else
-                return RedirectToAction("login", "Usersalls"); }
-
-
+        }
         [HttpPost]
         public async Task<IActionResult> Buy(int itemid, int quantity)
         {
@@ -65,27 +65,39 @@ namespace FinalPtoject.Controllers
             conn.Close();
             if (order.quantity > qt)
             {
-                ViewData["message"] = "Maximum order quantity should be " + qt;
-                var items = await _context.items.FindAsync(itemid);
-                return View(items);
+                ViewData["message"] = "maxiumam order quantity sould be " + qt;
+                var item = await _context.items.FindAsync(itemid);
+                return View(item);
             }
             else
             {
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                sql = "UPDATE items SET quantity = quantity - " + order.quantity + " where id ='" + order.itemid + "'";
+                sql = "UPDATE items  SET quantity  = quantity   - '" + order.quantity + "'  where (id ='" + order.itemid + "' )";
                 comm = new SqlCommand(sql, conn);
                 conn.Open();
                 comm.ExecuteNonQuery();
                 conn.Close();
-                ViewData["message"] = "Thank you for your purchase!";
-                var items = await _context.items.FindAsync(itemid);
                 return RedirectToAction(nameof(Index));
-
-
-
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -107,15 +119,12 @@ namespace FinalPtoject.Controllers
             return View(orItems);
         }
 
-        public async Task<IActionResult> report()
+        public async Task<IActionResult> Report()
         {
-            var orItems = await _context.items.FromSqlRaw
-                ("select usersall.id as Id, usersall.name as customername, " +
-                "sum(quantity * price) as total from itemsall," +
-                " orders, usersall where  itemid = itemsall.Id, and custid =" +
-                " usersall.Id group by usersall.id, usersall.name ").ToListAsync();
-            return View(orItems);
-
+            {
+                var orItems = await _context.Report.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum (items.quantity * Price)  as total from items, orders,usersall  where usersall.id = orders.userid  and itemid= orders.Id group by usersall.name,usersall.id ").ToListAsync();
+                return View(orItems);
+            }
         }
 
 public async Task<IActionResult> myprunchase()
