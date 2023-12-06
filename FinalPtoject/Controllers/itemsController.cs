@@ -31,11 +31,11 @@ namespace FinalPtoject.Controllers
 
                 SqlCommand comm;
                 conn.Open();
-                sql = "SELECT COUNT( Id)  FROM items where category =1";
+                sql = "SELECT COUNT( Id)  FROM items where category ='facep'";
                 comm = new SqlCommand(sql,conn);
                 ViewData["d1"] = (int)comm.ExecuteScalar();
 
-                sql = "SELECT COUNT( Id)  FROM items where category =2";
+                sql = "SELECT COUNT( Id)  FROM items where category ='lipp'";
                 comm = new SqlCommand(sql, conn);
                 ViewData["d2"] = (int)comm.ExecuteScalar();
 
