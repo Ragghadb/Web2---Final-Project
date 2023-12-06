@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalPtoject.Data;
 using FinalPtoject.Models;
-using static NuGet.Packaging.PackagingConstants;
 using Microsoft.Data.SqlClient;
-using System.Net;
 
 namespace FinalPtoject.Controllers
 {
@@ -25,25 +23,39 @@ namespace FinalPtoject.Controllers
         // GET: orders
         public async Task<IActionResult> Index()
         {
-              return _context.order != null ? 
-                          View(await _context.order.ToListAsync()) :
-                          Problem("Entity set 'FinalPtojectContext.order'  is null.");
+              return _context.orders != null ? 
+                          View(await _context.orders.ToListAsync()) :
+                          Problem("Entity set 'FinalPtojectContext.orders'  is null.");
         }
 
-        public async Task<IActionResult> Buy(int? Id)
+
+        public async Task<IActionResult> order_detail(int? idd)
         {
-            var item = await _context.items.FindAsync(Id);
-            string ss = HttpContext.Session.GetString("role");
-            if (ss == "admin")
-                return View(item);
-            else
-                return RedirectToAction("login", "Usersalls"); }
+            var orItems = await _context.orderdetail.FromSqlRaw
+                     ("select usersall.id, usersall.name as username, orders.buydate as BuyDate, items.price * orders.quantity as TotalPrice," + " orders.quantity as quantity from orders, usersall, items  where  userid =" + " '" + idd + "'  and usersall.Id = orders.userid and orders.itemid = items.id ").ToListAsync();
+            return View(orItems);
+        }
 
 
+
+        public async Task<IActionResult> Report()
+        {
+            {
+                var orItems = await _context.Report.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum (items.quantity * Price)  as total from items, orders,usersall  where usersall.id = orders.userid  and itemid= orders.Id group by usersall.name,usersall.id ").ToListAsync();
+                return View(orItems);
+            }
+        }
+
+
+        public async Task<IActionResult> Buy(int? id)
+        {
+            var item = await _context.items.FindAsync(id);
+            return View(item);
+        }
         [HttpPost]
         public async Task<IActionResult> Buy(int itemid, int quantity)
         {
-            order order = new order();
+            orders order = new orders();
             order.itemid = itemid;
             order.quantity = quantity;
             order.userid = Convert.ToInt32(HttpContext.Session.GetString("userid"));
@@ -65,25 +77,20 @@ namespace FinalPtoject.Controllers
             conn.Close();
             if (order.quantity > qt)
             {
-                ViewData["message"] = "Maximum order quantity should be " + qt;
-                var items = await _context.items.FindAsync(itemid);
-                return View(items);
+                ViewData["message"] = "maxiumam order quantity sould be " + qt;
+                var item = await _context.items.FindAsync(itemid);
+                return View(item);
             }
             else
             {
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                sql = "UPDATE items SET quantity = quantity - " + order.quantity + " where id ='" + order.itemid + "'";
+                sql = "UPDATE items  SET quantity  = quantity   - '" + order.quantity + "'  where (id ='" + order.itemid + "' )";
                 comm = new SqlCommand(sql, conn);
                 conn.Open();
                 comm.ExecuteNonQuery();
                 conn.Close();
-                ViewData["message"] = "Thank you for your purchase!";
-                var items = await _context.items.FindAsync(itemid);
                 return RedirectToAction(nameof(Index));
-
-
-
             }
         }
 
@@ -98,114 +105,62 @@ namespace FinalPtoject.Controllers
 
 
 
-        public async Task<IActionResult> order_detail(int? idd)
-        {
-            var orItems = await _context.orders.FromSqlRaw
-                     ("select usersall.id, usersall.name as username, orders.buydate as BuyDate, items.price * orders.quantity as TotalPrice," + " orders.quantity as quantity from orders, usersall, items  where  userid =" + " '" + idd + "'  and usersall.Id = orders.userid and orders.itemid = items.id ").ToListAsync();
-            return View(orItems);
-        }
-
-
-
-        public async Task<IActionResult> report()
-        {
-            var orItems = await _context.itemsall.FromSqlRaw
-                ("select usersall.id as Id, usersall.name as customername, " +
-                "sum(usersall.quantity * price) as total from items," +
-                " orders, usersall where  itemid = items.Id, and custid =" +
-                " usersall.Id group by usersall.id, usersall.name ").ToListAsync();
-            return View(orItems);
-
-        }
-
-
-
-
-
-public async Task<IActionResult> myprunchase()
-        {
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("userid"));
-            var orItems = await _context.orders.FromSqlRaw("select *  from orders where  userid = '" + userid + "'  ").ToListAsync();
-            return View(orItems);
-        }
 
 
         // GET: orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.order == null)
+            if (id == null || _context.orders == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.order
+            var orders = await _context.orders
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
+            if (orders == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(orders);
         }
 
         // GET: orders/Create
-        public async Task<IActionResult> Create(int? id)
+        public IActionResult Create()
         {
-            var items = await _context.items.FindAsync(id);
-            return View(items);
+            return View();
         }
 
         // POST: orders/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int itemid, int quantity)
+        public async Task<IActionResult> Create([Bind("Id,itemid,userid,quantity,buydate")] orders orders)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                // If not valid, return the view with error messages
-                return View(await _context.items.FindAsync(itemid));
+                _context.Add(orders);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-
-            order order = new order
-            {
-                itemid = itemid,
-                quantity = quantity,
-                userid = Convert.ToInt32(HttpContext.Session.GetString("userid")),
-                buydate = DateTime.Today
-            };
-
-            _context.Add(order);
-            await _context.SaveChangesAsync();
-
-            // Update item quantity using Entity Framework
-            var item = await _context.items.FindAsync(itemid);
-            if (item != null)
-            {
-                item.quantity -= quantity;
-            }
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(order_detail));
+            return View(orders);
         }
-
-
-
 
         // GET: orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.order == null)
+            if (id == null || _context.orders == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.order.FindAsync(id);
-            if (order == null)
+            var orders = await _context.orders.FindAsync(id);
+            if (orders == null)
             {
                 return NotFound();
             }
-            return View(order);
+            return View(orders);
         }
 
         // POST: orders/Edit/5
@@ -213,9 +168,9 @@ public async Task<IActionResult> myprunchase()
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,itemid,userid,quantity,buydate")] order order)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,itemid,userid,quantity,buydate")] orders orders)
         {
-            if (id != order.Id)
+            if (id != orders.Id)
             {
                 return NotFound();
             }
@@ -224,12 +179,12 @@ public async Task<IActionResult> myprunchase()
             {
                 try
                 {
-                    _context.Update(order);
+                    _context.Update(orders);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!orderExists(order.Id))
+                    if (!ordersExists(orders.Id))
                     {
                         return NotFound();
                     }
@@ -240,25 +195,25 @@ public async Task<IActionResult> myprunchase()
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(order);
+            return View(orders);
         }
 
         // GET: orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.order == null)
+            if (id == null || _context.orders == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.order
+            var orders = await _context.orders
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
+            if (orders == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(orders);
         }
 
         // POST: orders/Delete/5
@@ -266,23 +221,23 @@ public async Task<IActionResult> myprunchase()
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.order == null)
+            if (_context.orders == null)
             {
-                return Problem("Entity set 'FinalPtojectContext.order'  is null.");
+                return Problem("Entity set 'FinalPtojectContext.orders'  is null.");
             }
-            var order = await _context.order.FindAsync(id);
-            if (order != null)
+            var orders = await _context.orders.FindAsync(id);
+            if (orders != null)
             {
-                _context.order.Remove(order);
+                _context.orders.Remove(orders);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool orderExists(int id)
+        private bool ordersExists(int id)
         {
-          return (_context.order?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.orders?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

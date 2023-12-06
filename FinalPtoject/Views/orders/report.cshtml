@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<FinalPtoject.Models.Report>
 
 @{
-    ViewData["Title"] = "report";
+    ViewData["Title"] = "Report";
 }
 
-<h1>report</h1>
+<h1>Report</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,27 +13,39 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.customername)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.total)
             </th>
-            <th></th>
+           
+            <th>
+                <p>Detail </p>
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.customername)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total)
-            </td>
-            <td>
-                    <a asp-action="order_detail" asp-route-id="@item.Id ">View</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.customername)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.total)
+                </td>
+                <td>
+                    <a asp-action="order_detail" asp-route-id="@item.Id">View</a>
+
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

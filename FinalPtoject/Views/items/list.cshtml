@@ -35,6 +35,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)
             </td>
@@ -47,9 +50,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.quantity)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.discount)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.category)
             </td>

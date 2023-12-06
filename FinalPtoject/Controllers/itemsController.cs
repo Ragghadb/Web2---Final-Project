@@ -42,6 +42,11 @@ namespace FinalPtoject.Controllers
                 sql = "SELECT COUNT( Id)  FROM items ";
                 comm = new SqlCommand(sql, conn);
                 ViewData["totalItem"] = (int)comm.ExecuteScalar();
+
+
+                sql = "SELECT sum (orders.Quantity)  FROM orders ";
+                comm = new SqlCommand(sql, conn);
+                ViewData["totalquantity"] = (int)comm.ExecuteScalar();
                 return View();
             }
         }

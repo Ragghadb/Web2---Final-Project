@@ -24,7 +24,7 @@
 
                 <div class='carousel-caption mx-auto' style='top:45%; left:15%;'>
                     <h3 style='width:100px' class='mx-auto bg-secondary  text-white'>  @item.price SR  </h3>
-                    <h6 style='width:100px' class='mx-auto bg-light  text-white'>  <a asp-action="Buy" asp-route-id="@item.Id">Buy!</a>  </h6>
+                    <h6 style='width:100px' class='mx-auto bg-light  text-white'>  <a asp-controller="orders" asp-action="Buy" asp-route-id="@item.Id">Buy!</a>  </h6>
 
                 </div>
             </div>

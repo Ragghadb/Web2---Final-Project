@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FinalPtoject.Models
 {
-    public class order
+    public class orders
     {
         public int Id { get; set; }
         public int itemid { get; set; }
