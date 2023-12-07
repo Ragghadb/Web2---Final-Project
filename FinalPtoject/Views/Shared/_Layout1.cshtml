@@ -19,31 +19,32 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <ul class="navbar-nav flex-grow-1">
+                        
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="usersalls" asp-action="customer_home"> Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="items" asp-action="image_slider">Image slider</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="orders" asp-action="my_purchase">my prchase</a>
+                                </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="usersallS" asp-action="admin_home">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="items" asp-action="Index">Manage items</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="UsersallS" asp-action="email">send Email</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="usersallS" asp-action="customer_search">Cutomers serch</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="orders" asp-action="Report">report</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="items" asp-action="list">items list</a>
 
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="items" asp-action="statis">Dashboard</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="usersallS" asp-action="addadmin">Add admin</a>
+                                <form id="logoutForm" asp-controller="usersalls" asp-action="Login" method="post">
+                                    <button type="submit" class="nav-link btn btn-link text-dark" >Logout</button>
+                                </form>
+
                             </li>
+
+
+                            </ul>
 
 
                         </ul>
