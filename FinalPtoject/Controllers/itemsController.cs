@@ -53,6 +53,20 @@ namespace FinalPtoject.Controllers
 
 
 
+        public async Task<IActionResult> image_slider()
+        {
+            return _context.items != null ?
+                        View(await _context.items.ToListAsync()) :
+                        Problem("Entity set 'FinalPtojectContext.items'  is null.");
+        }
+        public async Task<IActionResult> list()
+        {
+            return _context.items != null ?
+                 View(await _context.items.OrderBy(m => m.category).ToListAsync()) :
+                Problem("Entity set 'FinalPtojectContext.items'  is null.");
+        }
+
+
 
         // GET: items
         public async Task<IActionResult> Index()
@@ -81,18 +95,7 @@ namespace FinalPtoject.Controllers
 
             return View(items);
         }
-        public async Task<IActionResult> image_slider()
-        {
-            return _context.items != null ?
-                        View(await _context.items.ToListAsync()) :
-                        Problem("Entity set 'FinalPtojectContext.items'  is null.");
-        }
-        public async Task<IActionResult> list()
-        {
-            return _context.items != null ?
-                 View(await _context.items.OrderBy(m => m.category).ToListAsync()) :
-                Problem("Entity set 'FinalPtojectContext.items'  is null.");
-        }
+
      
 
         // GET: items/Create

@@ -19,58 +19,61 @@
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <title>registration</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+
 
         body {
-            background-image: url('images/bkgr.jpg');
+            background-image: url('images/bkgr2.jpeg');
             background-size: cover;
             background-position: center;
         }
 
-        .regstbox {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 700px;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 30px;
-            border-radius: 5px;
+        .row {
+            justify-content: center;
+            align-items: center;
         }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
+
+        form {
+            background-color: #413d366c;
             color: white;
+            padding: 15px;
+            border-radius: 5px;
+            width: 350px;
+            height: 400px;
+            margin-top: 150px;
+            margin-left: 85px;
+        }
+
+
+        h1 {
+            width: 100%;
+            padding: 5px;
+            text-align: center;
+            color: black;
+            font-weight: bolder;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-top: 6px;
+
             font-weight: bold;
-            color: white;
+            color: black;
         }
 
         input[type="text"],
-        input[type="password"],
-        input[type="email"],
-        input[type="number"],
-        input[type="date"] {
+        input[type="password"] {
             width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #f2f2f2;
+            padding: 3px;
+            margin-bottom: 7px;
+            border: 1px solid #ccc;
         }
 
 
         .error {
             color: red;
         }
+
     </style>
 </head>
 
@@ -94,9 +97,10 @@
             </p>
 
             <button class="btn btn-success" type="submit">Login</button>
+                <p>Don't have an account? <a asp-action="registration">Register here</a></p>
         </form>
 
-        <p>Don't have an account? <a asp-action="registration">Register here</a></p>
+    
     </div>
     </div>
 </body>

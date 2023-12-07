@@ -46,6 +46,13 @@ namespace FinalPtoject.Controllers
             }
         }
 
+        public async Task<IActionResult> my_purchase()
+        {
+            int userid = Convert.ToInt32(HttpContext.Session.GetString("userid"));
+            var orItems = await _context.orders.FromSqlRaw("select *  from orders where  userid = '" + userid + "'  ").ToListAsync();
+            return View(orItems);
+        }
+
 
         public async Task<IActionResult> Buy(int? id)
         {
