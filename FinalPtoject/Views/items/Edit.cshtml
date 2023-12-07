@@ -38,16 +38,17 @@
                 </div>
                 <span asp-validation-for="discount" class="text-danger"></span>
             </div>
-         
+
             <div class="form-group">
                 <label class="control-label">Catagory</label>
                 <select class="form-control" asp-for="category">
-                    <option value="0">Please select</option>
-                    <option value="1">CS</option>
-                    <option value="2">IS</option>
+                    <option value="selec">Please select</option>
+                    <option value="facep">Face Products</option>
+                    <option value="lipp">Lip Products</option>
                 </select>
                 <span asp-validation-for="category" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="quantity" class="control-label"></label>
                 <input asp-for="quantity" class="form-control" />

@@ -83,6 +83,7 @@ namespace FinalPtoject.Controllers
         {
             {
                 ViewData["NAME"] = HttpContext.Session.GetString("Name");
+
                 string ss = HttpContext.Session.GetString("Role");
                 if (ss == "customer")
                 {

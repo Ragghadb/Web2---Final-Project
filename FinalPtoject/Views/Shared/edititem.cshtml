@@ -17,29 +17,24 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4">
-
                         <form asp-action="Edit" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="Id" />
-
                             <div class="form-group">
                                 <label asp-for="name" class="control-label"></label>
                                 <input asp-for="name" class="form-control" />
                                 <span asp-validation-for="name" class="text-danger"></span>
                             </div>
-
                             <div class="form-group">
                                 <label asp-for="descr" class="control-label"></label>
                                 <input asp-for="descr" class="form-control" />
                                 <span asp-validation-for="descr" class="text-danger"></span>
                             </div>
-
                             <div class="form-group">
                                 <label asp-for="price" class="control-label"></label>
                                 <input asp-for="price" class="form-control" />
                                 <span asp-validation-for="price" class="text-danger"></span>
                             </div>
-
                             <div class="form-group">
                                 <label asp-for="discount" class="control-label"></label>
                                 <div class="checkbox">
@@ -54,9 +49,9 @@
                             <div class="form-group">
                                 <label class="control-label">Catagory</label>
                                 <select class="form-control" asp-for="category">
-                                    <option value="0">Please select</option>
-                                    <option value="1">CS</option>
-                                    <option value="2">IS</option>
+                                    <option value="selec">Please select</option>
+                                    <option value="facep">Face Products</option>
+                                    <option value="lipp">Lip Products</option>
                                 </select>
                                 <span asp-validation-for="category" class="text-danger"></span>
                             </div>
@@ -66,13 +61,16 @@
                                 <input asp-for="quantity" class="form-control" />
                                 <span asp-validation-for="quantity" class="text-danger"></span>
                             </div>
-                        
+                            <div class="form-group">
+                                <label class="control-label">Pic</label>
+                                <input type="file" class="form-control" name="file" />
+                            </div>
 
                             <img src="~/images/@Model.imagefilename" height="150" />
 
                             <div class="form-group">
-                              
-                               
+                                <label asp-for="imagefilename" class="control-label"></label>
+                                <input asp-for="imagefilename" class="form-control" />
                                 <label class="control-label">Pic</label>
                                 <input type="file" class="form-control" name="file" />
                             </div>
@@ -80,6 +78,7 @@
                                 <input type="submit" value="Save" class="btn btn-primary" />
                             </div>
                         </form>
+
                     </div>
                 </div>
 
