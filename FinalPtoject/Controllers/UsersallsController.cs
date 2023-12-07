@@ -31,8 +31,15 @@ namespace FinalPtoject.Controllers
         }
 
 
+        public async Task<IActionResult> logout()
+        {
+        
+HttpContext.Session.Remove( "Name");
+HttpContext.Session.Remove("Role");
+HttpContext.Response.Cookies.Delete("Name");
+return RedirectToAction("Login");
+    }
 
-   
 
         public IActionResult addadmin()
         {
