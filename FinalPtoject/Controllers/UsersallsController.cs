@@ -81,14 +81,36 @@ namespace FinalPtoject.Controllers
 
         public IActionResult customer_home()
         {
-            return View();
+            {
+                ViewData["NAME"] = HttpContext.Session.GetString("Name");
+                string ss = HttpContext.Session.GetString("Role");
+                if (ss == "customer")
+                {
+                    return View();
+                }
+                else
+                    return RedirectToAction("Login", "usersall");
+
+
+            }
         }
 
         
 			public async Task<IActionResult> admin_home(int? id)
 			{
-                return View();
-			}
+            {
+                ViewData["NAME"] = HttpContext.Session.GetString("Name");
+                string ss = HttpContext.Session.GetString("Role");
+                if (ss == "admin")
+                {
+                    return View();
+                }
+                else
+                    return RedirectToAction("Login", "usersall");
+
+
+            }
+        }
 		
 
 

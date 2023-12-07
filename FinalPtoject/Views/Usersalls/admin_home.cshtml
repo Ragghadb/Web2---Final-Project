@@ -47,28 +47,8 @@ nav a:hover {
  </style>
 
 <body>
-	<!--create navgation bar-->
-	<nav>
-		<img src="imgs/logoo.png" width="50px">
-		<ul>
-			<li><a href="admin_home">Home</a></li>
-			<li><a href="items.Index">Item managment</a></li>
-			<li><a href="buy">List item</a></li>
-			<li><a href="email">Send email</a></li>
-			<li><a href="shopping">User search</a></li>
-			<li><a href="login">Report page</a></li>
-			<li><a href="addadmin">Add admin</a></li>
-			<li><a href="statis">Dashboard</a></li>
 
-		</ul>
-	</nav>
+	<h1>Welcome,  @ViewData["NAME"]</h1>
 
-	<!-- Read clint name from local storage-->
-	<div class="welcomemsg">
-		<h1>Welcome <span id="client-name"></span></h1>
-	</div>
-	@{
-		ViewData["M"] = "admin_home";
 
-	}
 </body>
