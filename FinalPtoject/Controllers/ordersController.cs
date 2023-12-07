@@ -29,10 +29,10 @@ namespace FinalPtoject.Controllers
         }
 
 
-        public async Task<IActionResult> order_detail(int? idd)
+        public async Task<IActionResult> order_detail(int? id)
         {
-            var orItems = await _context.orderdetail.FromSqlRaw
-                     ("select usersall.id, usersall.name as username, orders.buydate as BuyDate, items.price * orders.quantity as TotalPrice," + " orders.quantity as quantity from orders, usersall, items  where  userid =" + " '" + idd + "'  and usersall.Id = orders.userid and orders.itemid = items.id ").ToListAsync();
+
+            var orItems = await _context.orderdetail.FromSqlRaw("select usersall.id, usersall.name as username, orders.buydate as BuyDate,items.price * orders.quantity as TotalPrice, orders.quantity as quantity from orders, usersall, items where userid = '" + id + "' and usersall.Id =orders.userid and orders.itemid = items.id  ").ToListAsync();
             return View(orItems);
         }
 
