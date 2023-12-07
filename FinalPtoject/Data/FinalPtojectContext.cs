@@ -30,6 +30,7 @@ namespace FinalPtoject.Data
 
         public DbSet<FinalPtoject.Models.orders>? orders { get; set; }
         public DbSet<FinalPtoject.Models.Report>? Report { get; set; }
+        public DbSet<FinalPtoject.Models.my_purchase>? my_purchase { get; set; }
 
     }
 }

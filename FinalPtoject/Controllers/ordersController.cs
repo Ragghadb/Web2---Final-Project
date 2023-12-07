@@ -48,11 +48,40 @@ namespace FinalPtoject.Controllers
 
         public async Task<IActionResult> my_purchase()
         {
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("userid"));
-            var orItems = await _context.orders.FromSqlRaw("select *  from orders where  userid = '" + userid + "'  ").ToListAsync();
-            return View(orItems);
-        }
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "customer")
+            {
+                int userid = (int)HttpContext.Session.GetInt32("userid");
+                //var orItems = await _context.orders.FromSqlRaw("select *  from orders where  userid = '" + userid + "'  ").ToListAsync();
 
+                List<my_purchase> list = new List<my_purchase>();
+
+                var builder = WebApplication.CreateBuilder();
+                string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+                SqlConnection conn1 = new SqlConnection(conStr);
+                string sql;
+                sql = "SELECT usersall.id as Id,items.name as itemname,orders.Buydate as buydate,(items.price * orders.quantity) as Price ,orders.quantity as quantity FROM orders JOIN usersall ON orders.userid = usersall.id JOIN items ON orders.itemid = items.id Where orders.userid = '" + userid + "'";
+                SqlCommand comm = new SqlCommand(sql, conn1);
+                conn1.Open();
+                SqlDataReader reader = comm.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(new my_purchase
+                    {
+                        Id = (int)reader["Id"],
+                        name = (string)reader["itemname"],
+                        buydate = (DateTime)reader["buydate"],
+                        price = (int)reader["Price"],
+                        quantity = (int)reader["quantity"]
+                    });
+                }
+                return View(list);
+
+            }
+            else
+                return RedirectToAction("login", "Usersalls");
+
+        }
 
         public async Task<IActionResult> Buy(int? id)
         {
@@ -64,8 +93,8 @@ namespace FinalPtoject.Controllers
         {
             orders order = new orders();
             order.itemid = itemid;
+            order.userid = (int)HttpContext.Session.GetInt32("userid");
             order.quantity = quantity;
-            order.userid = Convert.ToInt32(HttpContext.Session.GetString("userid"));
             order.buydate = DateTime.Today;
             var builder = WebApplication.CreateBuilder();
             string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
@@ -97,7 +126,7 @@ namespace FinalPtoject.Controllers
                 conn.Open();
                 comm.ExecuteNonQuery();
                 conn.Close();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(my_purchase));
             }
         }
 

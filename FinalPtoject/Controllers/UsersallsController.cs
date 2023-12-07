@@ -10,7 +10,6 @@ using FinalPtoject.Models;
 using Microsoft.Data.SqlClient;
 using System.Net.Mail;
 using static System.Reflection.Metadata.BlobBuilder;
-using NuGet.Protocol.Plugins;
 
 namespace FinalPtoject.Controllers
 {
@@ -26,14 +25,14 @@ namespace FinalPtoject.Controllers
         // GET: Usersalls
         public async Task<IActionResult> Index()
         {
-            return _context.Usersall != null ?
-                        View(await _context.Usersall.ToListAsync()) :
-                        Problem("Entity set 'FinalPtojectContext.Usersall'  is null.");
+              return _context.Usersall != null ? 
+                          View(await _context.Usersall.ToListAsync()) :
+                          Problem("Entity set 'FinalPtojectContext.Usersall'  is null.");
         }
 
 
 
-
+   
 
         public IActionResult addadmin()
         {
@@ -80,18 +79,11 @@ namespace FinalPtoject.Controllers
 
 
 
-        public IActionResult customer_home()
+        public async Task<IActionResult> customer_home()
         {
             {
                 ViewData["NAME"] = HttpContext.Session.GetString("Name");
-
-                string ss = HttpContext.Session.GetString("Role");
-                if (ss == "customer")
-                {
-                    return View();
-                }
-                else
-                    return RedirectToAction("Login", "usersall");
+                return View(await _context.items.ToListAsync());
 
 
             }
@@ -99,7 +91,7 @@ namespace FinalPtoject.Controllers
 
 
         public async Task<IActionResult> admin_home(int? id)
-        {
+			{
             {
                 ViewData["NAME"] = HttpContext.Session.GetString("Name");
                 string ss = HttpContext.Session.GetString("Role");
@@ -113,7 +105,7 @@ namespace FinalPtoject.Controllers
 
             }
         }
-
+		
 
 
         public IActionResult email()
@@ -141,7 +133,7 @@ namespace FinalPtoject.Controllers
             ViewData["Message"] = "Email sent.";
             return View();
         }
-
+   
 
         // GET: Usersalls/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -159,16 +151,14 @@ namespace FinalPtoject.Controllers
             }
 
             return View(usersall);
+
         }
 
 
-        public async Task<IActionResult> logout()
+      
+       public async Task<IActionResult> reem()
         {
-            HttpContext.Session.Remove("Name");
-            HttpContext.Session.Remove("Role");
-            HttpContext.Response.Cookies.Delete("Name");
-
-            return RedirectToAction("login");
+            return View();
         }
 
 

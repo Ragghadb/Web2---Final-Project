@@ -1,10 +1,8 @@
-﻿@model FinalPtoject.Models.Usersall
-
+﻿@model IEnumerable<FinalPtoject.Models.items>
 @{
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h1>Welcome,  @ViewData["NAME"]</h1>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,15 +28,6 @@
         }
 
    
-
-        .container2 {
-     
-            background-color: #ffffff;
-            color: #94132f;
-      
-        }
-
-
         header {
             display: flex;
             justify-content: space-between;
@@ -47,10 +36,30 @@
             background-color: #000000;
         }
 
-        .eightimg:hover {
-            opacity: 1;
+        .eightimg {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(128, 128, 128, 0.5);
+            color: #fff;
+            text-align: center;
+            padding-top: 20%;
+            transition: opacity 0.5s;
         }
 
+            .eightimg:hover {
+                opacity: 1;
+            }
+
+        .jumbotron {
+             background-color: #94132f;
+              height: 30vh;
+              text-align: center;
+              padding-top: 25px;
+              margin-bottom: 0; }
 
 
 
@@ -73,28 +82,6 @@
             color: #000000;
         }
 
-        
-        .card:hover {
-            color: #94132f;
-        }
-
-
-
-
-        .bb:hover {
-            transform: scale(0.9);
-            opacity: .5;
-            color: #94132f;
-        }
-
-        .bb {
-            transition: 0.3s;
-            margin: 10px 0px;
-        }
-
-        body {
-            color: #94132f;
-        }
 
         p {
             font-size: 20px;
@@ -107,16 +94,61 @@
         h1 {
             text-align: center;
             font-size: 25px;
-            color: #000000;
+            color: #000000; }
+
+        h2 {
+            text-align: center;
+            font-size: 25px;
+            color: white;
+        }
+
         
     </style>
 </head>
 <body>
 
+    <h1 style=" font-size: 35px;">
+        Welcome @ViewData["NAME"]
+    </h1>
+
+    <!--jumbotron div with company name & disc-->
+    <div class="jumbotron">
+        <h1> Rare Beauty</h1>
+        <p>Together we’re building a safe, welcoming space in beauty and beyond. This is makeup made to feel good in, without hiding what makes you unique. And it’s all vegan and cruelty free.</p>
+    </div>
 
 
 
-   
+
+    <div class="container-fluid">
+        <div class="row">
+            <h2 class="Head2"> Our Discount Items </h2>
+
+            @foreach (var item in Model)
+            {
+                if (item.discount == "yes")
+                {
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-header">
+                                @item.name
+                            </div>
+                            <div class="card-body">
+                                <img src="~/images/@item.imagefilename" height="100" />
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="items" asp-action="Details" asp-route-id="@item.Id"> More Details</a> |
+                            </div>
+
+
+                        </div>
+                    </div>
+                }
+            }
+
+
+        </div>
+    </div>
 
 
     <!-- crousal with 4 images & animated caption text -->
@@ -165,11 +197,6 @@
     </div>
 
 
-    <!--jumbotron div with company name & disc-->
-    <div class="jumbotron">
-        <h1> Rare Beauty</h1>
-        <p>Together we’re building a safe, welcoming space in beauty and beyond. This is makeup made to feel good in, without hiding what makes you unique. And it’s all vegan and cruelty free.</p>
-    </div>
 
     <!-- 8 images with hoover effect-->
     <h2 class="Head2"> Bestellers</h2>
@@ -312,14 +339,14 @@
     <footer>
         <section>
             <div class="container-fluid  text-left" id="c1">
-                <h1>Contact Us</h1>
+                <h2 class="Head2"> Contact Us </h2>
                 <div class="row">
                     <div class="col-sm-6 ">
-                        <p><i class="fa fa-home fa-2x"></i>  m arabia , Medinah</p>
+                        <p><i class="fa fa-home fa-2x"></i>  Suadi Arabia , Medinah</p>
                         <hr>
                         <p><i class="fa fa-phone fa-2x"></i> 1-888-892-RARE (7273) </p>
                         <hr>
-                        <p><i class="fa fa-envelope fa-2x"></i>Bhello@rarebeauty.com</p>
+                        <p><i class="fa fa-envelope fa-2x"></i>hello@rarebeauty.com</p>
                         <hr>
                     </div>
                 </div>
@@ -338,7 +365,7 @@
             </div>
             <p style="padding: 44px; "><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1266.570676921733!2d39.5963212594698!3d24.494582739334238!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15bdbfaf8ceb385d%3A0xc60ee9dd59f69304!2sMedina%20Boulevard!5e0!3m2!1sar!2ssa!4v1684787818236!5m2!1sar!2ssa" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p>
         </section>
-        <h1>hello@rarebeauty.com          Tel:- 1-888-892-RARE (7273) </h1>
+        <h1>hello@rarebeauty.com                 Tel:- 1-888-892-RARE (7273) </h1>
     </footer>
 
 </body>

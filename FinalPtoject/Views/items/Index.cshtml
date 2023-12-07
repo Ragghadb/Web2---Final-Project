@@ -4,14 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>ItemManage</h1>
-@if ((string)ViewData["role"] == "admin")
-{
- <p>
 
-        @await Html.PartialAsync("insertitems", new items())
-    </p>
-}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,8 +16,12 @@
    
 </head>
  <body>
+<h1>ItemManage</h1>
 
-
+<p>
+    
+    @await Html.PartialAsync("insertitems", new items())
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -83,7 +80,6 @@
                
                                 @if ((string)ViewData["role"] == "admin")
                         {
-                     
                           //  <a asp-controller="items" asp-action="Edit" asp-route-id="@item.Id">Edit  |</a>
                             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="@("#editModal-" + @item.Id)">edit</button>
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@("#deleteModal-" + @item.Id)">Delete</button>
@@ -95,9 +91,6 @@
                         }
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="@("#detailModal-" + @item.Id)">Detail</button>
                         @await Html.PartialAsync("detailitem", item)
-                        @{
-                            Layout = "~/Views/Shared/_Layout1.cshtml";
-                        }
                     </td>
 
 

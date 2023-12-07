@@ -5,6 +5,10 @@
 
 }
 
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
 <h1>Details</h1>
 
 <div>
@@ -46,24 +50,12 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.category)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.imagefilename)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.imagefilename)
-        </dd>
-        <dt>
-            Pic
-        </dt>
         <dd>
             <img src="~/images/@Model.imagefilename" height="150" />
-            <br />@Model.imagefilename
         </dd>
     </dl>
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller ="Usersalls" asp-action="customer_home">Back Home</a>
 </div>

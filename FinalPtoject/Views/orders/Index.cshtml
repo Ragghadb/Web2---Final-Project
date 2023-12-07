@@ -3,15 +3,9 @@
 @{
     ViewData["Title"] = "Index";
 }
-@{
-    Layout = "~/Views/Shared/_Layout1.cshtml";
-}
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="customer_home">Home</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -46,9 +40,7 @@
                 @Html.DisplayFor(modelItem => item.buydate)
             </td>
             <td>
-              
-                <a asp-action="Details" asp-route-id="@item.Id">View</a> |
-             
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
             </td>
         </tr>
 }
