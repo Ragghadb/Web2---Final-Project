@@ -20,52 +20,76 @@ namespace FinalPtoject.Controllers
             _context = context;
         }
 
+
+        //8
         public async Task<IActionResult> statis()
         {
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
             {
-                string sql = "";
+                {
+                    string sql = "";
 
-                var builder = WebApplication.CreateBuilder();
-                string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
-                SqlConnection conn = new SqlConnection(conStr);
+                    var builder = WebApplication.CreateBuilder();
+                    string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+                    SqlConnection conn = new SqlConnection(conStr);
 
-                SqlCommand comm;
-                conn.Open();
-                sql = "SELECT COUNT( Id)  FROM items where category ='facep'";
-                comm = new SqlCommand(sql,conn);
-                ViewData["d1"] = (int)comm.ExecuteScalar();
+                    SqlCommand comm;
+                    conn.Open();
+                    sql = "SELECT COUNT( Id)  FROM items where category ='facep'";
+                    comm = new SqlCommand(sql, conn);
+                    ViewData["d1"] = (int)comm.ExecuteScalar();
 
-                sql = "SELECT COUNT( Id)  FROM items where category ='lipp'";
-                comm = new SqlCommand(sql, conn);
-                ViewData["d2"] = (int)comm.ExecuteScalar();
+                    sql = "SELECT COUNT( Id)  FROM items where category ='lipp'";
+                    comm = new SqlCommand(sql, conn);
+                    ViewData["d2"] = (int)comm.ExecuteScalar();
 
-                sql = "SELECT COUNT( Id)  FROM items ";
-                comm = new SqlCommand(sql, conn);
-                ViewData["totalItem"] = (int)comm.ExecuteScalar();
+                    sql = "SELECT COUNT( Id)  FROM items ";
+                    comm = new SqlCommand(sql, conn);
+                    ViewData["totalItem"] = (int)comm.ExecuteScalar();
 
 
-                sql = "SELECT sum (orders.Quantity)  FROM orders ";
-                comm = new SqlCommand(sql, conn);
-                ViewData["totalquantity"] = (int)comm.ExecuteScalar();
-                return View();
+                    sql = "SELECT sum (orders.Quantity)  FROM orders ";
+                    comm = new SqlCommand(sql, conn);
+                    ViewData["totalquantity"] = (int)comm.ExecuteScalar();
+                    return View();
+                }
             }
+            else
+                return RedirectToAction("login", "Usersalls");
         }
 
 
+        //8
 
         public async Task<IActionResult> image_slider()
         {
-            return _context.items != null ?
-                        View(await _context.items.ToListAsync()) :
-                        Problem("Entity set 'FinalPtojectContext.items'  is null.");
-        }
-        public async Task<IActionResult> list()
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "customer") 
+                {
+                    return _context.items != null ?
+                            View(await _context.items.ToListAsync()) :
+                            Problem("Entity set 'FinalPtojectContext.items'  is null.");
+                }   else
+                    return RedirectToAction("login", "Usersalls");
+            } 
+
+
+
+
+        //8
+            public async Task<IActionResult> list()
         {
-            return _context.items != null ?
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "customer")
+            {
+                return _context.items != null ?
                  View(await _context.items.OrderBy(m => m.category).ToListAsync()) :
                 Problem("Entity set 'FinalPtojectContext.items'  is null.");
+            }
+            else
+                return RedirectToAction("login", "Usersalls");
         }
-
 
 
         // GET: items

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FinalPtoject.Data;
 using FinalPtoject.Models;
 using Microsoft.Data.SqlClient;
+using System.Composition;
 
 namespace FinalPtoject.Controllers
 {
@@ -28,25 +29,77 @@ namespace FinalPtoject.Controllers
                           Problem("Entity set 'FinalPtojectContext.orders'  is null.");
         }
 
-
+        //-
         public async Task<IActionResult> order_detail(int? id)
         {
+            List<orderdetail> list = new List<orderdetail>();
 
-            var orItems = await _context.orderdetail.FromSqlRaw("select usersall.id, usersall.name as username, orders.buydate as BuyDate,items.price * orders.quantity as TotalPrice, orders.quantity as quantity from orders, usersall, items where userid = '" + id + "' and usersall.Id =orders.userid and orders.itemid = items.id  ").ToListAsync();
-            return View(orItems);
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+            SqlConnection conn1 = new SqlConnection(conStr);
+            string sql;
+            sql = "SELECT usersall.id as Id,usersall.name as username,items.name as itemname,orders.buydate as BuyDate,items.price * orders.quantity as TotalPrice ,orders.quantity as quantity FROM orders JOIN usersall ON orders.userid = usersall.id JOIN items ON orders.itemid = items.id Where orders.userid = '" + id + "' order by orders.buydate DESC";
+            SqlCommand comm = new SqlCommand(sql, conn1);
+            conn1.Open();
+            SqlDataReader reader = comm.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(new orderdetail
+                {
+                    Id = (int)reader["Id"],
+                    username = (string)reader["username"],
+                    itemname = (string)reader["itemname"],
+                    buydate = (DateTime)reader["Buydate"],
+                    totalprice = (int)reader["TotalPrice"],
+                    quantity = (int)reader["quantity"]
+                });
+            }
+            return View(list);
+
+
         }
 
 
-
+        //-
         public async Task<IActionResult> Report()
         {
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
             {
-                var orItems = await _context.Report.FromSqlRaw("select usersall.id as Id, usersall.name as customername, sum (items.quantity * Price)  as total from items, orders,usersall  where usersall.id = orders.userid  and itemid= orders.Id group by usersall.name,usersall.id ").ToListAsync();
-                return View(orItems);
+                //   var orItems = await _context.report.FromSqlRaw("select userall.id as Id, userall.name as customername, sum(orders.quantity*items.price) as total, orders.buydate as Buydate from items, orders, userall where  itemid = items.Id and userid = userall.Id group by userall.id, userall.name,orders.buydate order by orders.buydate ").ToListAsync();
+                // return View(orItems);
+                List<Report> list = new List<Report>();
+
+                var builder = WebApplication.CreateBuilder();
+                string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+                SqlConnection conn1 = new SqlConnection(conStr);
+                string sql;
+                sql = "select usersall.id as Id, usersall.name as customername, sum(orders.quantity*items.price) as total from items, orders, usersall where  itemid = items.Id and userid = usersall.Id group by usersall.id, usersall.name";
+                SqlCommand comm = new SqlCommand(sql, conn1);
+                conn1.Open();
+                SqlDataReader reader = comm.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(new Report
+                    {
+                        Id = (int)reader["Id"],
+                        customername = (string)reader["customername"],
+                        total = (int)reader["total"],
+
+                    });
+                }
+                return View(list);
+
             }
+            else
+                return RedirectToAction("login", "useralls");
+
+
         }
 
-        public async Task<IActionResult> my_purchase()
+    
+    //-
+    public async Task<IActionResult> my_purchase()
         {
             string ss = HttpContext.Session.GetString("Role");
             if (ss == "customer")
@@ -80,6 +133,7 @@ namespace FinalPtoject.Controllers
             }
             else
                 return RedirectToAction("login", "Usersalls");
+           
 
         }
 

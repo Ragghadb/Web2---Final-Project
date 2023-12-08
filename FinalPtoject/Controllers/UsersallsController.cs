@@ -41,6 +41,10 @@ return RedirectToAction("Login");
     }
 
 
+
+
+
+        //Role
         public IActionResult addadmin()
         {
             return View();
@@ -49,71 +53,88 @@ return RedirectToAction("Login");
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> addadmin([Bind("name,password")] Usersall Usersall)
+
+{
+    string ss = HttpContext.Session.GetString("Role");
+    if (ss == "admin")
+    {
+
+        var builder = WebApplication.CreateBuilder();
+        string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
+        SqlConnection conn1 = new SqlConnection(conStr);
+        string sql;
+        sql = "select * from usersall where name ='" + Usersall.name + "' ";
+        Boolean flage = false;
+        SqlCommand comm = new SqlCommand(sql, conn1);
+        conn1.Open();
+        SqlDataReader reader = comm.ExecuteReader();
+        if (reader.Read())
         {
+            flage = true;
+        }
+        reader.Close();
+        if (flage == true)
+        {
+            ViewData["message"] = "name already exists";
+        }
+        else
+        {
+            var role = "admin";
+            sql = "insert into usersall (name,password,role) values ('" + Usersall.name + "','" + Usersall.password + "','" + role + "')";
+            comm = new SqlCommand(sql, conn1);
+            comm.ExecuteNonQuery();
+            return RedirectToAction(nameof(Index));
+        }
+        conn1.Close();
 
-            var builder = WebApplication.CreateBuilder();
-            string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
-            SqlConnection conn1 = new SqlConnection(conStr);
-            string sql;
-            sql = "select * from usersall where name ='" + Usersall.name + "' ";
-            Boolean flage = false;
-            SqlCommand comm = new SqlCommand(sql, conn1);
-            conn1.Open();
-            SqlDataReader reader = comm.ExecuteReader();
-            if (reader.Read())
-            {
-                flage = true;
-            }
-            reader.Close();
-            if (flage == true)
-            {
-                ViewData["message"] = "name already exists";
-            }
+        return View();
+    }
             else
-            {
-                var role = "admin";
-                sql = "insert into usersall (name,password,role) values ('" + Usersall.name + "','" + Usersall.password + "','" + role + "')";
-                comm = new SqlCommand(sql, conn1);
-                comm.ExecuteNonQuery();
-                return RedirectToAction(nameof(Index));
-            }
-            conn1.Close();
-
-            return View();
+                return RedirectToAction("login", "Usersalls");
         }
 
 
 
 
-
+        //8
         public async Task<IActionResult> customer_home()
         {
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "customer")
             {
                 ViewData["NAME"] = HttpContext.Session.GetString("Name");
                 return View(await _context.items.ToListAsync());
 
 
-            }
+            }  
+            else
+                return RedirectToAction("login", "Usersalls");
         }
 
+
+
+
+        //8
 
         public async Task<IActionResult> admin_home(int? id)
-			{
+			
+              {
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
             {
                 ViewData["NAME"] = HttpContext.Session.GetString("Name");
-                string ss = HttpContext.Session.GetString("Role");
-                if (ss == "admin")
-                {
-                    return View();
-                }
-                else
-                    return RedirectToAction("Login", "usersall");
+                return View(await _context.items.ToListAsync());
 
 
-            }
-        }
-		
+    }  
+            else
+                return RedirectToAction("login", "Usersalls");
+}
 
+
+
+
+        //Role
 
         public IActionResult email()
         {
@@ -124,8 +145,11 @@ return RedirectToAction("Login");
         [HttpPost]
         public IActionResult email(string address, string body, string subject)
         {
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
+            { 
 
-            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
             var mail = new MailMessage();
             mail.From = new MailAddress("ireemnafea@gmail.com");
             mail.To.Add(address); // receiver email address
@@ -139,11 +163,16 @@ return RedirectToAction("Login");
             SmtpServer.Send(mail);
             ViewData["Message"] = "Email sent.";
             return View();
-        }
-   
+        }   
+            else
+                    return RedirectToAction("Login", "usersall");
 
-        // GET: Usersalls/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+    }
+
+
+    // GET: Usersalls/Details/5
+    public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Usersall == null)
             {
@@ -163,10 +192,7 @@ return RedirectToAction("Login");
 
 
       
-       public async Task<IActionResult> reem()
-        {
-            return View();
-        }
+     
 
 
         // GET: Usersalls/Create
@@ -192,6 +218,13 @@ return RedirectToAction("Login");
             }
             return View(usersall);
         }
+
+
+
+
+
+
+
 
 
         //login
@@ -305,22 +338,35 @@ return RedirectToAction("Login");
         }
 
 
+
+
+
         public async Task<IActionResult> customer_search()
         {
-
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
             {
+
+                {
                 Usersall brItem = new Usersall();
 
                 return View(brItem);
             }
+            }
+            else
+                return RedirectToAction("Login", "usersall");
+
+
         }
 
         [HttpPost]
         public async Task<IActionResult> customer_search(string tit)
         {
-            var bkItems = await _context.Usersall.FromSqlRaw("select * from usersall where name = '" + tit + "' ").FirstOrDefaultAsync();
+           
+                var bkItems = await _context.Usersall.FromSqlRaw("select * from usersall where name = '" + tit + "' ").FirstOrDefaultAsync();
             return View(bkItems);
-        }
+            }
+     
 
 
 
