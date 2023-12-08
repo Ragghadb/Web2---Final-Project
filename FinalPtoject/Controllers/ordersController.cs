@@ -167,7 +167,7 @@ namespace FinalPtoject.Controllers
             conn.Close();
             if (order.quantity > qt)
             {
-                ViewData["message"] = "maxiumam order quantity sould be " + qt;
+                ViewData["message"] = "Maxiumam order quantity should be " + qt;
                 var item = await _context.items.FindAsync(itemid);
                 return View(item);
             }

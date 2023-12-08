@@ -161,7 +161,7 @@ return RedirectToAction("Login");
             SmtpServer.Credentials = new System.Net.NetworkCredential("ireemnafea@gmail.com", "ztna qidl exzb rkdy");
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
-            ViewData["Message"] = "Email sent.";
+            ViewData["Message"] = "Email Sent";
             return View();
         }   
             else
@@ -372,15 +372,21 @@ return RedirectToAction("Login");
 
 
         // GET: Usersalls/Edit/5
-        public async Task<IActionResult> Edit()
+
+        public async Task<IActionResult> Edit(int? id)
         {
-           
-            int id = (int)HttpContext.Session.GetInt32("userid");
+            if (id == null || _context.Usersall == null)
+            {
+                return NotFound();
+            }
+
             var usersall = await _context.Usersall.FindAsync(id);
-            
+            if (usersall == null)
+            {
+                return NotFound();
+            }
             return View(usersall);
         }
-
         // POST: Usersalls/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -394,7 +400,7 @@ return RedirectToAction("Login");
                 
              
               
-                return RedirectToAction(nameof(login));
+                return RedirectToAction(nameof(Index));
             }
           
 
