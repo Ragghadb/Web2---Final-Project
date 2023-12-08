@@ -82,20 +82,21 @@
 
         <form asp-action="registration">
 
-            <h2>Registration</h2>
+            <h2>Registration here</h2>
+            <hr /> 
 
             <label id="lb1">Username:</label>
-            <input id="uname" type="text" name="name" placeholder="Enter a username" required>
+            <input id="uname" type="text" name="name" placeholder="Enter your username" required>
 
             <label id="lb2" for="password">Password:</label>
-            <input id="upass" type="password" name="password" placeholder="Enter a password" required>
+            <input id="upass" type="password" name="password" placeholder="Enter your password" required>
 
 
             <label id="lb3" for="confirm-password">Confirm Password:</label>
             <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter your password" required>
-            <label for="check" id="ck1">if you have an account <a asp-action="login">Login</a></label>
             <p class="error">@ViewData["error"]</p>
-            <center>  <button class="btn btn-success" type="submit" id="submit-btn">Submit</button> </center>
+            <center>  <button class="btn btn-success" type="submit" id="submit-btn">Register</button> </center>
+            <label for="check" id="ck1">Are you registered? <a asp-action="login">Login</a></label>
         </form>
 
     </div>

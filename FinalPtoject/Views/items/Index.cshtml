@@ -5,6 +5,7 @@
 }
 
 
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,12 +17,19 @@
    
 </head>
  <body>
-<h1>ItemManage</h1>
+    @if ((string)ViewData["role"] == "customer")
+    {
 
-<p>
-    
+        Layout = "~/Views/Shared/_Layout1.cshtml";
+    }
+
+
+
+<h1>ItemManage</h1>
+     @if ((string)ViewData["role"] == "admin") { 
+           
     @await Html.PartialAsync("insertitems", new items())
-</p>
+     }
 <table class="table">
     <thead>
         <tr>
@@ -89,6 +97,8 @@
 
 
                         }
+
+
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="@("#detailModal-" + @item.Id)">Detail</button>
                         @await Html.PartialAsync("detailitem", item)
                     </td>

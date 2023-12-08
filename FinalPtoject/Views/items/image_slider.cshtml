@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<FinalPtoject.Models.items>
 
+@{
+    ViewData["Title"] = "Image_Slider";
+}
 
-<h1>image_slider</h1>
+<h1>Products Images</h1>
+
 @{
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
@@ -12,6 +16,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            background-color: antiquewhite;
+        }
+    </style>
+
+
+
 </head>
 
 <div id="myCarousel" style="width:30% ; min-width:300px " class="carousel slide mx-auto" data-ride="carousel">
@@ -23,11 +36,11 @@
         {
             <div class='carousel-item   @(counter == 0 ? "active"  : String.Empty)'>
 
-                <center> <img src="~/images/@item.imagefilename" height="150"> </center>
+                <center> <img src="~/images/@item.imagefilename" height="400"> </center>
 
-                <div class='carousel-caption mx-auto' style='top:45%; left:15%;'>
-                    <h3 style='width:100px' class='mx-auto bg-secondary  text-white'>  @item.price SR  </h3>
-                    <h6 style='width:100px' class='mx-auto bg-light  text-white'>  <a asp-controller="orders" asp-action="Buy" asp-route-id="@item.Id">Buy!</a>  </h6>
+                <div class='carousel-caption mx-auto' style='top:77%; left:15%;'>
+                    <h3 style='width:150px' class='mx-auto bg-secondary  text-white'>  @item.price SR  </h3>
+                    <h6 style='width:150px' class='mx-auto bg-light  text-white'>  <a asp-controller="orders" asp-action="Buy" asp-route-id="@item.Id">Buy!</a>  </h6>
 
                 </div>
             </div>
