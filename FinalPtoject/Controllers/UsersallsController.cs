@@ -328,7 +328,8 @@ return RedirectToAction("Login");
         // GET: Usersalls/Edit/5
         public async Task<IActionResult> Edit()
         {
-            int id = Convert.ToInt32(HttpContext.Session.GetString("userid"));
+           
+            int id = (int)HttpContext.Session.GetInt32("userid");
             var usersall = await _context.Usersall.FindAsync(id);
             
             return View(usersall);
