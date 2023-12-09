@@ -41,32 +41,12 @@ namespace FinalPtoject.Controllers
     //-
     public async Task<IActionResult> orderdetail(int? id)
         {
-            List<orderdetail> list = new List<orderdetail>();
-
-            var builder = WebApplication.CreateBuilder();
-            string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
-            SqlConnection conn1 = new SqlConnection(conStr);
-            string sql;
-            sql = "SELECT usersall.id as Id,usersall.name as username,orders.buydate as BuyDate,items.price * orders.quantity as TotalPrice ,orders.quantity as quantity FROM orders JOIN usersall ON orders.userid = usersall.id JOIN items ON orders.itemid = items.id Where orders.userid = '" + id + "' order by orders.buydate DESC";
-            SqlCommand comm = new SqlCommand(sql, conn1);
-            conn1.Open();
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                list.Add(new orderdetail
-                {
-                    Id = (int)reader["Id"],
-                    username = (string)reader["username"],
-                    buydate = (DateTime)reader["Buydate"],
-                    totalprice = (int)reader["TotalPrice"],
-                    quantity = (int)reader["quantity"]
-                });
-            }
-            return View(list);
+            var orItems = await _context.orderdetail.FromSqlRaw("SELECT orders.id as Id,usersall.name as username,items.name as itemname,orders.buydate as BuyDate,items.price * orders.quantity as TotalPrice ,orders.quantity as quantity FROM orders JOIN usersall ON orders.userid = usersall.id JOIN items ON orders.itemid = items.id Where orders.userid = '" + id + "' order by orders.buydate DESC").ToListAsync();
+            return View(orItems);
         }
 
 
-        //-
+        
         public async Task<IActionResult> Report()
         {
             string ss = HttpContext.Session.GetString("Role");
@@ -326,7 +306,7 @@ namespace FinalPtoject.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Report));
         }
 
         private bool ordersExists(int id)
