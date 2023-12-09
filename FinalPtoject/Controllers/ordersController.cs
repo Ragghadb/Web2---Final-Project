@@ -92,7 +92,7 @@ namespace FinalPtoject.Controllers
 
             }
             else
-                return RedirectToAction("Login", "Userslls");
+                return RedirectToAction("Login", "Usersalls");
         }
 
 
