@@ -1,23 +1,22 @@
-﻿@model IEnumerable<FinalPtoject.Models.orders>
+﻿@model IEnumerable<FinalPtoject.Models.orderdetail>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Order Details";
 }
 
-@{
-    Layout = "~/Views/Shared/_Layout1.cshtml";
-}
+<h1>orderdetail</h1>
 
-<h1>Index</h1>
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.itemid)
+                @Html.DisplayNameFor(model => model.username)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.userid)
+                @Html.DisplayNameFor(model => model.totalprice)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.quantity)
@@ -32,10 +31,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.itemid)
+                @Html.DisplayFor(modelItem => item.username)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.userid)
+                @Html.DisplayFor(modelItem => item.totalprice)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.quantity)
@@ -44,7 +43,9 @@
                 @Html.DisplayFor(modelItem => item.buydate)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

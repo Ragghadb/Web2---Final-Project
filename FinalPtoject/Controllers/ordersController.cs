@@ -24,13 +24,22 @@ namespace FinalPtoject.Controllers
         // GET: orders
         public async Task<IActionResult> Index()
         {
-              return _context.orders != null ? 
-                          View(await _context.orders.ToListAsync()) :
-                          Problem("Entity set 'FinalPtojectContext.orders'  is null.");
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
+            {
+                return _context.orders != null ?
+                             View(await _context.orders.ToListAsync()) :
+                             Problem("Entity set 'FinalPtojectContext.orders'  is null.");
+
+            }
+            else
+                return RedirectToAction("login", "Usersalls");
         }
 
-        //-
-        public async Task<IActionResult> order_detail(int? id)
+
+
+    //-
+    public async Task<IActionResult> orderdetail(int? id)
         {
             List<orderdetail> list = new List<orderdetail>();
 
@@ -38,7 +47,7 @@ namespace FinalPtoject.Controllers
             string conStr = builder.Configuration.GetConnectionString("FinalPtojectContext");
             SqlConnection conn1 = new SqlConnection(conStr);
             string sql;
-            sql = "SELECT usersall.id as Id,usersall.name as username,items.name as itemname,orders.buydate as BuyDate,items.price * orders.quantity as TotalPrice ,orders.quantity as quantity FROM orders JOIN usersall ON orders.userid = usersall.id JOIN items ON orders.itemid = items.id Where orders.userid = '" + id + "' order by orders.buydate DESC";
+            sql = "SELECT usersall.id as Id,usersall.name as username,orders.buydate as BuyDate,items.price * orders.quantity as TotalPrice ,orders.quantity as quantity FROM orders JOIN usersall ON orders.userid = usersall.id JOIN items ON orders.itemid = items.id Where orders.userid = '" + id + "' order by orders.buydate DESC";
             SqlCommand comm = new SqlCommand(sql, conn1);
             conn1.Open();
             SqlDataReader reader = comm.ExecuteReader();
@@ -48,15 +57,12 @@ namespace FinalPtoject.Controllers
                 {
                     Id = (int)reader["Id"],
                     username = (string)reader["username"],
-                    itemname = (string)reader["itemname"],
                     buydate = (DateTime)reader["Buydate"],
                     totalprice = (int)reader["TotalPrice"],
                     quantity = (int)reader["quantity"]
                 });
             }
             return View(list);
-
-
         }
 
 
@@ -281,7 +287,7 @@ namespace FinalPtoject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Report));
             }
             return View(orders);
         }
