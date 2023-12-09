@@ -92,14 +92,12 @@ namespace FinalPtoject.Controllers
 
             }
             else
-                return RedirectToAction("login", "useralls");
-
-
+                return RedirectToAction("Login", "Userslls");
         }
 
-    
-    //-
-    public async Task<IActionResult> my_purchase()
+
+        //-
+        public async Task<IActionResult> my_purchase()
         {
             string ss = HttpContext.Session.GetString("Role");
             if (ss == "customer")

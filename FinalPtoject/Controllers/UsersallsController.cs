@@ -25,9 +25,17 @@ namespace FinalPtoject.Controllers
         // GET: Usersalls
         public async Task<IActionResult> Index()
         {
-              return _context.Usersall != null ? 
-                          View(await _context.Usersall.ToListAsync()) :
-                          Problem("Entity set 'FinalPtojectContext.Usersall'  is null.");
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
+            {
+                return _context.Usersall != null ?
+                        View(await _context.Usersall.ToListAsync()) :
+                        Problem("Entity set 'FinalPtojectContext.Usersall'  is null.");
+
+            }
+            else
+                return RedirectToAction("login", "Usersalls");
+          
         }
 
 
@@ -47,7 +55,13 @@ return RedirectToAction("Login");
         //Role
         public IActionResult addadmin()
         {
-            return View();
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
+            {
+                return View();
+            }
+            else
+                return RedirectToAction("login", "Usersalls");
         }
 
         [HttpPost]
@@ -138,7 +152,15 @@ return RedirectToAction("Login");
 
         public IActionResult email()
         {
-            return View();
+            string ss = HttpContext.Session.GetString("Role");
+            if (ss == "admin")
+            {
+
+                return View();
+
+            }
+            else
+                return RedirectToAction("login", "Usersalls");
 
         }
 
@@ -354,7 +376,7 @@ return RedirectToAction("Login");
             }
             }
             else
-                return RedirectToAction("Login", "usersall");
+                return RedirectToAction("Login", "Usersalls");
 
 
         }
